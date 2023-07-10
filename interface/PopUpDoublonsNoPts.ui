@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PopUpDetectionDoublons</class>
+ <widget class="QMainWindow" name="PopUpDetectionDoublons">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>742</width>
+    <height>246</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Doublons</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>img/suppDoublons.png</normaloff>img/suppDoublons.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">font: 9pt &quot;MS Shell Dlg 2&quot;;</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>30</width>
+    <height>30</height>
+   </size>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">#centralwidget {
+    background-color:rgb(255, 255, 255);
+}</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
+    <property name="rightMargin">
+     <number>10</number>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
+    </property>
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Doublons sur les numéros de points</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="1" column="2">
+        <widget class="QPushButton" name="buttonNext">
+         <property name="text">
+          <string>Suivant</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="buttonPrevious">
+         <property name="text">
+          <string>Précédent</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="3">
+        <widget class="QTableWidget" name="tableDoublonsNoPts">
+         <column>
+          <property name="text">
+           <string>nom</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>E [m]</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>N [m]</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>H [m]</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>themeMO</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>natureMO</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>commentaires</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionNouveau">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>img/newFile.png</normaloff>img/newFile.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOuvrir">
+   <property name="icon">
+    <iconset>
+     <normaloff>img/open2.png</normaloff>img/open2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ouvrir...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>img/save.png</normaloff>img/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer_sous">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>img/saveAs.png</normaloff>img/saveAs.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enregistrer sous...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSupprimer_les_doublons">
+   <property name="icon">
+    <iconset>
+     <normaloff>img/suppDoublons.png</normaloff>img/suppDoublons.png</iconset>
+   </property>
+   <property name="text">
+    <string>Supprimer les doublons</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

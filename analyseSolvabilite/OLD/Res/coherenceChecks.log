@@ -1,0 +1,49 @@
+
+CONSTITENCY CONTROLS
+====================
+
+!!!! OPTION NOT SELECTED BY USER !!!!
+
+CODE 100 : STRUCTURE VALIDATION C:/01_ContraintesMsMo/02_dev/01_code/analyseSolvabilite/OLD/2023.05.10-saisie-complet_sans_croquis.xml WITH DATAMODEL observationsModel.xsd
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+>>> checked
+
+CODE 100 : STRUCTURE VALIDATION C:/01_ContraintesMsMo/02_dev/01_code/analyseSolvabilite/OLD/knownPoints_A_RECALC.xml WITH DATAMODEL pointsModel.xsd
+---------------------------------------------------------------------------------------------------------------------------------------------------
+>>> checked
+
+CODE 100 : STRUCTURE VALIDATION C:/01_ContraintesMsMo/02_dev/01_code/analyseSolvabilite/OLD/2023.05.10-params.xml WITH DATAMODEL parametersModel.xsd
+----------------------------------------------------------------------------------------------------------------------------------------------------
+>>> checked
+
+CODE 200 : DUPLICATE POINTS
+---------------------------
+>>> checked
+
+CODE 201 : POINTS FROM NETWORK FILE FOUND IN POINTS FILE
+--------------------------------------------------------
+>>> checked
+
+CODE 202 : GROUP FROM NETWORK FILE FOUND IN PARAMETERS FILE
+-----------------------------------------------------------
+>>> checked
+
+CODE 203 : CONTROL POINTS (DATUM) FROM PARAMETERS FILE FOUND IN POINTS FILE
+---------------------------------------------------------------------------
+>>> checked
+
+CODE 400 : COUNTING AND CHECK OF PLANIMETRIC AND ALTIMETRIC ELEMENTS
+--------------------------------------------------------------------
+>>> checked
+
+PLANIMETRIC COUNTING :
+- - - - - - - - - - -  
+NUMBER OF OBSERVATION :  9794
+NUMBER OF UNKNOWNS :     4246
+NUMBER OF CONSTRAINTS :  170
+DATUM :                  STO
+OVERDETERMINATION :      5718
+
+********************************
+* NETWORK READY FOR ADJUSTMENT *
+********************************

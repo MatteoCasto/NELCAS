@@ -1,0 +1,817 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="network">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="polar" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="station" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="stationName" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="themeMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                        <xs:element name="natureMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                        <xs:element name="stationData" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="I" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:union>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:string">
+                                                                        <xs:length value="0" />
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:float" />
+                                                                </xs:simpleType>
+                                                            </xs:union>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+													<xs:element name="stationCentring" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="planiStdDev" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="mm" minOccurs="1" maxOccurs="1">
+																				<xs:simpleType>
+																					<xs:union>
+																						<xs:simpleType>
+																							<xs:restriction base="xs:string">
+																								<xs:length value="0" />
+																							</xs:restriction>
+																						</xs:simpleType>
+																						<xs:simpleType>
+																							<xs:restriction base="xs:float">
+																								<xs:minExclusive value="0" />
+																							</xs:restriction>
+																						</xs:simpleType>
+																					</xs:union>
+																				</xs:simpleType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="altiStdDev" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="mm" minOccurs="1" maxOccurs="1">
+																				<xs:simpleType>
+																					<xs:union>
+																						<xs:simpleType>
+																							<xs:restriction base="xs:string">
+																								<xs:length value="0" />
+																							</xs:restriction>
+																						</xs:simpleType>
+																						<xs:simpleType>
+																							<xs:restriction base="xs:float">
+																								<xs:minExclusive value="0" />
+																							</xs:restriction>
+																						</xs:simpleType>
+																					</xs:union>
+																				</xs:simpleType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="distanceGroup" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="directionGroup" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="centringGroup" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="measure" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="pointName" minOccurs="1" maxOccurs="1">
+                                                                    <xs:simpleType>
+                                                                        <xs:restriction base="xs:string">
+                                                                            <xs:minLength value="1" />
+                                                                            <xs:maxLength value="30" />
+                                                                        </xs:restriction>
+                                                                    </xs:simpleType>
+                                                                </xs:element>
+                                                                <xs:element name="themeMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                                                <xs:element name="natureMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                                                <xs:element name="RI" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                                <xs:complexType>
+                                                                                    <xs:sequence>
+                                                                                        <xs:element name="cc" minOccurs="1" maxOccurs="1">
+                                                                                            <xs:simpleType>
+                                                                                                <xs:union>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:string">
+                                                                                                            <xs:length value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:float">
+                                                                                                            <xs:minExclusive value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                </xs:union>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:element>
+                                                                                    </xs:sequence>
+                                                                                </xs:complexType>
+                                                                            </xs:element>
+                                                                            <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                            <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="DS" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                                <xs:complexType>
+                                                                                    <xs:sequence>
+                                                                                        <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                            <xs:simpleType>
+                                                                                                <xs:union>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:string">
+                                                                                                            <xs:length value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:float">
+                                                                                                            <xs:minExclusive value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                </xs:union>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:element>
+                                                                                        <xs:element name="ppm" minOccurs="1" maxOccurs="1">
+                                                                                            <xs:simpleType>
+                                                                                                <xs:union>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:string">
+                                                                                                            <xs:length value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:float" />
+                                                                                                    </xs:simpleType>
+                                                                                                </xs:union>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:element>
+                                                                                    </xs:sequence>
+                                                                                </xs:complexType>
+                                                                            </xs:element>
+                                                                            <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                            <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="ZD" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                                <xs:complexType>
+                                                                                    <xs:sequence>
+                                                                                        <xs:element name="cc" minOccurs="1" maxOccurs="1">
+                                                                                            <xs:simpleType>
+                                                                                                <xs:union>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:string">
+                                                                                                            <xs:length value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:float">
+                                                                                                            <xs:minExclusive value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                </xs:union>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:element>
+                                                                                    </xs:sequence>
+                                                                                </xs:complexType>
+                                                                            </xs:element>
+                                                                            <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                            <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="S" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="value" minOccurs="1" maxOccurs="1">
+                                                                                <xs:simpleType>
+                                                                                    <xs:union>
+                                                                                        <xs:simpleType>
+                                                                                            <xs:restriction base="xs:string">
+                                                                                                <xs:length value="0" />
+                                                                                            </xs:restriction>
+                                                                                        </xs:simpleType>
+                                                                                        <xs:simpleType>
+                                                                                            <xs:restriction base="xs:float" />
+                                                                                        </xs:simpleType>
+                                                                                    </xs:union>
+                                                                                </xs:simpleType>
+                                                                            </xs:element>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="dm1" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="value" minOccurs="1" maxOccurs="1">
+                                                                                <xs:simpleType>
+                                                                                    <xs:union>
+                                                                                        <xs:simpleType>
+                                                                                            <xs:restriction base="xs:string">
+                                                                                                <xs:length value="0" />
+                                                                                            </xs:restriction>
+                                                                                        </xs:simpleType>
+                                                                                        <xs:simpleType>
+                                                                                            <xs:restriction base="xs:float" />
+                                                                                        </xs:simpleType>
+                                                                                    </xs:union>
+                                                                                </xs:simpleType>
+                                                                            </xs:element>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element name="dm2" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="value" minOccurs="1" maxOccurs="1">
+                                                                                <xs:simpleType>
+                                                                                    <xs:union>
+                                                                                        <xs:simpleType>
+                                                                                            <xs:restriction base="xs:string">
+                                                                                                <xs:length value="0" />
+                                                                                            </xs:restriction>
+                                                                                        </xs:simpleType>
+                                                                                        <xs:simpleType>
+                                                                                            <xs:restriction base="xs:float" />
+                                                                                        </xs:simpleType>
+                                                                                    </xs:union>
+                                                                                </xs:simpleType>
+                                                                            </xs:element>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+																<xs:element name="targetCentring" minOccurs="1" maxOccurs="1">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="planiStdDev" minOccurs="1" maxOccurs="1">
+																				<xs:complexType>
+                                                                                    <xs:sequence>
+                                                                                        <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                            <xs:simpleType>
+                                                                                                <xs:union>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:string">
+                                                                                                            <xs:length value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:float">
+                                                                                                            <xs:minExclusive value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                </xs:union>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:element>
+                                                                                    </xs:sequence>
+                                                                                </xs:complexType>
+																			</xs:element>
+																			<xs:element name="altiStdDev" minOccurs="1" maxOccurs="1">
+																				<xs:complexType>
+                                                                                    <xs:sequence>
+                                                                                        <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                            <xs:simpleType>
+                                                                                                <xs:union>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:string">
+                                                                                                            <xs:length value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                    <xs:simpleType>
+                                                                                                        <xs:restriction base="xs:float">
+                                                                                                            <xs:minExclusive value="0" />
+                                                                                                        </xs:restriction>
+                                                                                                    </xs:simpleType>
+                                                                                                </xs:union>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:element>
+                                                                                    </xs:sequence>
+                                                                                </xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="gnss" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="session" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="sessionName" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:maxLength value="30" />
+                                                    <xs:minLength value="1" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="gnssGroup" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="measure" minOccurs="2" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="pointName" minOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="themeMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="natureMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                                    <xs:choice minOccurs="1" maxOccurs="2">
+                                                        <xs:sequence>
+                                                            <xs:element name="LY" minOccurs="1" maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                            <xs:complexType>
+                                                                                <xs:sequence>
+                                                                                    <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                        <xs:simpleType>
+                                                                                            <xs:union>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:string">
+                                                                                                        <xs:length value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:float">
+                                                                                                        <xs:minExclusive value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                            </xs:union>
+                                                                                        </xs:simpleType>
+                                                                                    </xs:element>
+                                                                                </xs:sequence>
+                                                                            </xs:complexType>
+                                                                        </xs:element>
+                                                                        <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="LX" minOccurs="1" maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                            <xs:complexType>
+                                                                                <xs:sequence>
+                                                                                    <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                        <xs:simpleType>
+                                                                                            <xs:union>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:string">
+                                                                                                        <xs:length value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:float">
+                                                                                                        <xs:minExclusive value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                            </xs:union>
+                                                                                        </xs:simpleType>
+                                                                                    </xs:element>
+                                                                                </xs:sequence>
+                                                                            </xs:complexType>
+                                                                        </xs:element>
+                                                                        <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                        <xs:sequence>
+                                                            <xs:element name="LH" minOccurs="1" maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                            <xs:complexType>
+                                                                                <xs:sequence>
+                                                                                    <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                        <xs:simpleType>
+                                                                                            <xs:union>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:string">
+                                                                                                        <xs:length value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:float">
+                                                                                                        <xs:minExclusive value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                            </xs:union>
+                                                                                        </xs:simpleType>
+                                                                                    </xs:element>
+                                                                                </xs:sequence>
+                                                                            </xs:complexType>
+                                                                        </xs:element>
+                                                                        <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:choice>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="localSystems" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="localSystem" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="localSystemName" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:maxLength value="30" />
+                                                    <xs:minLength value="1" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="localSystemGroup" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="measure" minOccurs="2" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="pointName" minOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="themeMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="natureMO" type="xs:integer" minOccurs="0" maxOccurs="1" />
+                                                    <xs:choice minOccurs="1" maxOccurs="2">
+                                                        <xs:sequence>
+                                                            <xs:element name="LY" minOccurs="1" maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                            <xs:complexType>
+                                                                                <xs:sequence>
+                                                                                    <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                        <xs:simpleType>
+                                                                                            <xs:union>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:string">
+                                                                                                        <xs:length value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:float">
+                                                                                                        <xs:minExclusive value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                            </xs:union>
+                                                                                        </xs:simpleType>
+                                                                                    </xs:element>
+                                                                                </xs:sequence>
+                                                                            </xs:complexType>
+                                                                        </xs:element>
+                                                                        <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="LX" minOccurs="1" maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                            <xs:complexType>
+                                                                                <xs:sequence>
+                                                                                    <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                        <xs:simpleType>
+                                                                                            <xs:union>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:string">
+                                                                                                        <xs:length value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:float">
+                                                                                                        <xs:minExclusive value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                            </xs:union>
+                                                                                        </xs:simpleType>
+                                                                                    </xs:element>
+                                                                                </xs:sequence>
+                                                                            </xs:complexType>
+                                                                        </xs:element>
+                                                                        <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                        <xs:sequence>
+                                                            <xs:element name="LH" minOccurs="1" maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                            <xs:complexType>
+                                                                                <xs:sequence>
+                                                                                    <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                        <xs:simpleType>
+                                                                                            <xs:union>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:string">
+                                                                                                        <xs:length value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                                <xs:simpleType>
+                                                                                                    <xs:restriction base="xs:float">
+                                                                                                        <xs:minExclusive value="0" />
+                                                                                                    </xs:restriction>
+                                                                                                </xs:simpleType>
+                                                                                            </xs:union>
+                                                                                        </xs:simpleType>
+                                                                                    </xs:element>
+                                                                                </xs:sequence>
+                                                                            </xs:complexType>
+                                                                        </xs:element>
+                                                                        <xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1" />
+                                                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:choice>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="simpleMeasures" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="simpleMeasure" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="simpleMeasureGroup" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="measure" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="pointName1" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="pointName2" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:minLength value="1" />
+                                                                <xs:maxLength value="30" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:choice>
+                                                        <xs:element name="DP" minOccurs="1" maxOccurs="1">
+                                                            <xs:complexType>
+                                                                <xs:sequence>
+                                                                    <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                        <xs:complexType>
+                                                                            <xs:sequence>
+                                                                                <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                    <xs:simpleType>
+                                                                                        <xs:union>
+                                                                                            <xs:simpleType>
+                                                                                                <xs:restriction base="xs:string">
+                                                                                                    <xs:length value="0" />
+                                                                                                </xs:restriction>
+                                                                                            </xs:simpleType>
+                                                                                            <xs:simpleType>
+                                                                                                <xs:restriction base="xs:float">
+                                                                                                    <xs:minExclusive value="0" />
+                                                                                                </xs:restriction>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:union>
+                                                                                    </xs:simpleType>
+                                                                                </xs:element>
+                                                                            </xs:sequence>
+                                                                        </xs:complexType>
+                                                                    </xs:element>
+                                                                    <xs:element name="value" minOccurs="1" maxOccurs="1">
+                                                                        <xs:simpleType>
+                                                                            <xs:restriction base="xs:float">
+                                                                                <xs:minExclusive value="0" />
+                                                                            </xs:restriction>
+                                                                        </xs:simpleType>
+                                                                    </xs:element>
+                                                                    <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                </xs:sequence>
+                                                            </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="DH" minOccurs="1" maxOccurs="1">
+                                                            <xs:complexType>
+                                                                <xs:sequence>
+                                                                    <xs:element name="stdDev" minOccurs="1" maxOccurs="1">
+                                                                        <xs:complexType>
+                                                                            <xs:sequence>
+                                                                                <xs:element name="mm" minOccurs="1" maxOccurs="1">
+                                                                                    <xs:simpleType>
+                                                                                        <xs:union>
+                                                                                            <xs:simpleType>
+                                                                                                <xs:restriction base="xs:string">
+                                                                                                    <xs:length value="0" />
+                                                                                                </xs:restriction>
+                                                                                            </xs:simpleType>
+                                                                                            <xs:simpleType>
+                                                                                                <xs:restriction base="xs:float">
+                                                                                                    <xs:minExclusive value="0" />
+                                                                                                </xs:restriction>
+                                                                                            </xs:simpleType>
+                                                                                        </xs:union>
+                                                                                    </xs:simpleType>
+                                                                                </xs:element>
+                                                                            </xs:sequence>
+                                                                        </xs:complexType>
+                                                                    </xs:element>
+                                                                    <xs:element name="value" minOccurs="1" maxOccurs="1">
+                                                                        <xs:simpleType>
+                                                                            <xs:restriction base="xs:float">
+                                                                                <xs:minExclusive value="0" />
+                                                                            </xs:restriction>
+                                                                        </xs:simpleType>
+                                                                    </xs:element>
+                                                                    <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                                                </xs:sequence>
+                                                            </xs:complexType>
+                                                        </xs:element>
+                                                    </xs:choice>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="constraints" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="constraint" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="constraintType" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:enumeration value="alignment" />
+                                                    <xs:enumeration value="perpendicular" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="pointNameA" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="pointNameB" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="pointNameP" minOccurs="1" maxOccurs="1">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="1" />
+                                                    <xs:maxLength value="30" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="discarded" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+                                        <xs:element name="dm1" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="value" minOccurs="1" maxOccurs="1">
+                                                        <xs:simpleType>
+                                                            <xs:union>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:string">
+                                                                        <xs:length value="0" />
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:float" />
+                                                                </xs:simpleType>
+                                                            </xs:union>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

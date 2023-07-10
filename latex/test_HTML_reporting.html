@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapport multi-pages</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #f2f2f2;
+            text-align: center;
+            line-height: 50px;
+            font-size: 18px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background-color: #f2f2f2;
+            text-align: center;
+            line-height: 30px;
+            font-size: 14px;
+        }
+
+        .content {
+            margin-top: 80px;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Rapport multi-pages
+    </div>
+
+    <div class="content">
+        <!-- Contenu de la page 1 -->
+        <h1>Page 1</h1>
+        <p>Contenu de la page 1...</p>
+
+        <div class="page-break"></div>
+
+        <!-- Contenu de la page 2 -->
+        <h1>Page 2</h1>
+        <p>Contenu de la page 2...</p>
+
+        <div class="page-break"></div>
+
+        <!-- Contenu de la page 3 -->
+        <h1>Page 3</h1>
+        <p>Contenu de la page 3...</p>
+    </div>
+
+    <div class="footer">
+        Pied de page - Page <span class="page-number"></span>
+    </div>
+
+    <script>
+        // Mise à jour du numéro de page dans le pied de page
+        var pageNumbers = document.getElementsByClassName("page-number");
+        for (var i = 0; i < pageNumbers.length; i++) {
+            pageNumbers[i].textContent = i + 1;
+        }
+    </script>
+</body>
+</html>

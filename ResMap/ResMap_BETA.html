@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ResMap</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./img/tab_icon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" -->
+    <!-- integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css"
+    type="text/css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+
+<body>
+
+  <main class="" role="main">
+    <div id="map"><div id="popup"></div>
+  </main>
+  
+  
+  <div class="boxMenu absolutePosition">
+
+    <img class="py-2 center" src="./img/ResMap_logo.svg" >
+    <!-- <p class="text-center mb-3">Interface web permettant la visualisation des résultats d'un calcul de réseau 2D issu de LTOP</p> -->
+
+    <div class="mt-2 greyBackground border border-dark p-1">
+      <h5 class="mx-2">Import du fichier XML des résultats</h5>
+      <input class="mx-2 my-1 pr-2 inputFile" type="file" id="inputfile" accept=".xml" multiple></input>
+      <p class="mx-2 my-1 importInfo" id="outputTest"> </p>
+    </div>
+
+    <button class ="accordion mt-2 py-1" id="coucheButton">Menu</button>
+    <div class="panel scroller">
+      
+      <div class="mt-2">
+        <button class="accordion py-1">Points</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxPointsFixes" onchange="changeLayerVisibilityFixedPoints()" checked>
+            <label class="checkboxLabel" for="checkboxPointsFixes">
+              <img src="./img/blueTriangle.png" width="16" height="15">  Points fixes
+            </label>
+          </div>
+          <div class="NoPtsDecalage">
+            <input class="form-check-input NoPtsCheckbox" type="checkbox" id="checkboxPointsFixesNo" onchange="changeLayerVisibilityTextFixedPoints()">
+            <label class="checkboxLabel NoPtsTxt" for="checkboxPointsFixesNo">
+              N° points fixes
+            </label>
+          </div>
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxPointsNouv" onchange="changeLayerVisibilityVariablePoints()" checked>
+            <label class="checkboxLabel" for="checkboxPointsNouv">
+              <img src="./img/redDot_icon.png" width="15" height="15">  Points nouveaux 
+            </label>
+          </div>
+          <div class="NoPtsDecalage">
+            <input class="form-check-input NoPtsCheckbox" type="checkbox" id="checkboxPointsVariableNo" onchange="changeLayerVisibilityTextVariablePoints()">
+            <label class="checkboxLabel NoPtsTxt" for="checkboxPointsVariableNo">
+              N° points nouveaux
+            </label>
+          </div>
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxPointsNotCalculated" onchange="changeLayerVisibilityNotCalculatedPoints()">
+            <label class="checkboxLabel" for="checkboxPointsNotCalculated">
+              <img src="./img/purpleCross.png" width="15" height="15">  Points non-calculés 
+            </label>
+          </div>
+          <div class="NoPtsDecalage">
+            <input class="form-check-input NoPtsCheckbox" type="checkbox" id="checkboxPointsNotCalculatedNo" onchange="changeLayerVisibilityTextNotCalculatedPoints()">
+            <label class="checkboxLabel NoPtsTxt" for="checkboxPointsNotCalculatedNo">
+              N° points non-calculés
+            </label>
+          </div>
+
+
+
+          <div class="input-group mt-2 mb-1" >
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-secondary  py-1 px-2" type="button" style="font-size: 15px;" onclick="centerViewOnPoint()">Zoom</button>
+            </div>
+            <input type="text" class="form-control  py-1 px-2" placeholder="N° de point" aria-label="N° de point" aria-describedby="basic-addon1" style="font-size: 15px;" id="inputPointSearch">
+          </div>
+
+
+        </div>
+      </div>
+
+
+      <div class="mt-2">
+        <button class="accordion py-1">Levés polaires</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxDirections" onchange="changeLayerVisibilityDirections()">
+            <label class="checkboxLabel" for="checkboxDirections" id="legendeDir">
+              Directions
+            </label>
+          </div>
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxDistances" onchange="changeLayerVisibilityDistances()">
+            <label class="checkboxLabel" for="checkboxDistances" id="legendeDist">
+              Distances
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- <div class="mt-2">
+        <button class="accordion py-1">Observations de coordonnées</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxCoordE" onchange="changeLayerVisibilityCoordE()" >
+            <label class="checkboxLabel" for="checkboxCoordE">
+              E / Y
+            </label>
+          </div>
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxCoordN" onchange="changeLayerVisibilityCoordN()" >
+            <label class="checkboxLabel" for="checkboxCoordN">
+              N / X
+            </label>
+          </div>
+
+        </div>
+      </div> -->
+
+
+      <div class="mt-2">
+        <button class="accordion py-1" clicked>Sessions GNSS</button>
+    
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxGnss" onchange="changeLayerVisibilityGnss()">
+            <label class="checkboxLabel" for="checkboxGnss">
+              Relevés par GNSS
+            </label>
+            <div class="textEchelleLegende"><img src="./img/pentagon_bleu_simple.svg" width="25" height="25">simple</div>
+            <div class="textEchelleLegende"><img src="./img/pentagon_bleu_double.svg" width="25" height="25">multiple</div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="mt-2">
+        <button class="accordion py-1" clicked>Systèmes locaux</button>
+    
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxSysLoc" onchange="changeLayerVisibilitySysLoc()">
+            <label class="checkboxLabel" for="checkboxSysLoc">
+              Systèmes locaux 
+            </label>
+            <div>
+              <div class="textEchelleLegende fontColorSysLoc">○ (couleur et taille aléat. par sys.)</div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="mt-2">
+        <button class="accordion py-1" clicked>Cotes</button>
+    
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxCotes" onchange="changeLayerVisibilityCotes()">
+            <label class="checkboxLabel" for="checkboxCotes">
+              Cotes horizontales
+            </label>
+            <div>
+              <div class="textEchelleLegende fontColorCotes">――</div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
+      <div class="mt-2">
+        <button class="accordion py-1">Contraintes géométriques</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxAlignement" onchange="changeLayerVisibilityAlignement()">
+            <label class="checkboxLabel" for="checkboxAlignement" >
+              Alignement
+            </label>
+            <div>
+              <div class="textEchelleLegende fontColorAlign">――</div>
+            </div>
+          </div>
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxPerpendiculaire" onchange="changeLayerVisibilityPerpendiculaire()">
+            <label class="checkboxLabel" for="checkboxPerpendiculaire">
+              Perpendiculaire
+            </label>
+            <div>
+              <div class="textEchelleLegende fontColorPerp">――</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div class="mt-2">
+        <button class="accordion py-1">Indicateurs de précisions</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxEllipses" onchange="changeLayerVisibilityEllipses()">
+            <label class="checkboxLabel" for="checkboxEllipses">
+              Ellipses de confiance
+            </label>
+            <!-- <div>
+              <div class="textEchelleLegende" id="AffichageEchelleEllipse">⤷ Echelle: </div>
+            </div> -->
+          </div>
+          <div>
+            <div class="textEchelleLegende fontColorEllipses">⬭</div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="mt-2">
+        <button class="accordion py-1" clicked>Indicateurs de fiabilité</button>
+    
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxRectangles" onchange="changeLayerVisibilityRectangles()">
+            <label class="checkboxLabel" for="checkboxRectangles">
+              Vecteurs de fiabilité externe
+            </label>
+            <!-- <div>
+              <div class="textEchelleLegende" id="AffichageEchelleRectangles">⤷ Echelle: </div>
+            </div> -->
+          </div>
+          <div>
+            <div class="textEchelleLegende fontColorVectFiab">⟶</div>
+          </div>
+
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxFiabLoc" onchange="changeLayerVisibilityFiabLoc()">
+            <label class="checkboxLabel" for="checkboxFiabLoc">
+              Carte des fiabilités locales (zi)
+            </label>
+            <div>
+              <div class="textEchelleLegende fontColorFiab1">――  0 - 25 %</div>
+              <div class="textEchelleLegende fontColorFiab2">――  25 - 50 %</div>
+              <div class="textEchelleLegende fontColorFiab3">――  50 - 75 %</div>
+              <div class="textEchelleLegende fontColorFiab4">――  75 - 100 %</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <div class="mt-2">
+        <button class="accordion py-1">Résidus normés</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxResidusNormes" onchange="changeLayerVisibilityWi()">
+            <label class="checkboxLabel" for="checkboxResidusNormes" id="legendeWi">
+              Carte des résidus normés (wi)
+            </label>
+            <div>
+              <div class="textEchelleLegende fontColorFiab1" id="palierWi1">――  x - ∞</div>
+              <div class="textEchelleLegende fontColorFiab2" id="palierWi2">――  x - x</div>
+              <div class="textEchelleLegende fontColorFiab4" id="palierWi3">――  0.0 - x</div>
+            </div>
+          </div>
+
+        </div>
+      </div> -->
+
+      <div class="mt-2">
+        <button class="accordion py-1">Diff. avec coordonnées initiales</button>
+        <div class="panel">
+
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxVect" onchange="changeLayerVisibilityVect()">
+            <label class="checkboxLabel" for="checkboxVect">
+             Vecteurs dE/dN points nouv.
+            </label>
+          </div>
+          <div>
+            <div class="textEchelleLegende fontColorVect">⟶</div>
+          </div>
+          <!-- <div>
+            <div class="textEchelleLegende" id="AffichageEchelleVect">⤷ Echelle: </div>
+          </div> -->
+            
+          <div>
+            <input class="form-check-input" type="checkbox" id="checkboxVectRattach" onchange="changeLayerVisibilityVectPF()">
+            <label class="checkboxLabel" for="checkboxVectRattach">
+              Vecteurs dE/dN rattachement
+            </label>
+          </div>
+          <div>
+            <div class="textEchelleLegende fontColorVectPF">⟶</div>
+          </div>
+          <!-- <div>
+            <div class="textEchelleLegende" id="AffichageEchelleVectPF">⤷ Echelle: </div>
+          </div> -->
+
+        </div>
+      </div>
+      
+
+
+    </div>
+
+      
+  </div>
+
+  <!-- <div class="creditHEIG">
+    M. Casto © HEIG-VD, INSIT, 2022
+  </div> -->
+
+
+  <div class="slidecontainer">
+    <input type="range" min="0" max="6999" step="10" value="200" class="slider" id="myRange">
+    <div>
+      <span class="textEchelle">Echelle des ellipses, rectangles et vecteurs → </span>
+      <span id="textEchelle" class="textEchelle"></span>
+      <span class="textEchelle">:1</span>
+      <div class="textEchelle" id="nivConfiance">Niveau de confiance des ellipses → </div>
+    </div>
+  </div>
+
+  <div class="WMSabsolutePosition">
+    <button class="accordion py-2"><img src="./img/mapWMS_MENU.png" width="50"></button>
+    <div class="panel">
+      <div>
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="cb_CN" onchange="changeBackground()">
+        <label class="form-check-label" for="cb_CN">
+          CN
+        </label>
+      </div>
+      <div>
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="cb_MO" onchange="changeBackground()" checked>
+        <label class="form-check-label" for="cb_MO">
+          MO
+        </label>
+      </div>
+      <div>
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="cb_img" onchange="changeBackground()">
+        <label class="form-check-label" for="cb_img">
+          ortho
+        </label>
+      </div>
+      <div>
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="cb_relief" onchange="changeBackground()">
+        <label class="form-check-label" for="cb_relief">
+          relief
+        </label>
+      </div>
+      <div>
+      <div>
+        
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="cb_none" onchange="changeBackground()">
+        <label class="form-check-label" for="cb_none">
+          -
+        </label>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- PANNEAU DE FILTRES -->
+
+
+  <div class="filterAbsolutePosition">
+    <button class="accordion py-2 left-accordion"><img src="./img/filter.png" width="45" ></button>
+    <div class="panel left-panel" id="leftPanel">
+
+      <div class="form-group py-2">
+
+        <!-- Element à filtrer -->
+        <select class="form-control mb-1" id="filtreSur">
+          <option>-</option>
+          <option>demi-grand axe a [mm]</option>
+          <option>vecteurs NA [mm]</option>
+          <option>vecteurs dE/dN [mm]</option>
+        </select>
+        
+        <!-- Opérateur -->
+        <select class="form-control mb-1 center-adapt-to-content "  id="filtreOperateur">
+          <option>=</option>
+          <option>&ge;</option>
+          <option>&le;</option>
+        </select>
+        
+        <!-- Valeur à filtrer -->
+        <input class="form-control mb-1" id="filtreValeur" onchange="">
+      
+
+        <!-- Boutons ajotuer filtre et réinitialiser tous les filtres-->
+        <div class="button-container mt-3">
+          <button class="btn btn-outline-secondary mb-1" onclick="addFilter()">Ajouter</button>
+          <button class="btn btn-outline-secondary mb-1" onclick="viderFiltresActifs()" >Réinitialiser</button>
+        </div>
+
+        <table class="table" id="listeFiltresActifs">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Filtre actif</th>
+              <th>Op.</th>
+              <th>Val.</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <!-- IMPORT DES SCRIPTS JS -->
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4.js"
+  integrity="sha512-cgJnZ1VX2G0MAN4C5OGShwI3zHhfQ6RLriXuukhblNu+T082/ZRGoWLP/0xMKObvB6AUKdnm27hQKj8hKZPjXA=="
+  crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"></script>
+  <script src="./js/OpenLayers_v6.4.3.js"></script>
+  <script src="./js/jquery-3.6.1.min.js"></script>
+  <script src="./js/xml2json.js"></script>
+  <script src="./js/labelTextStyle.js"></script>
+  <script src="./js/ParsingPointsXML.js"></script>
+  <script src="./js/ParsingViseesXML.js"></script>
+  <script src="./js/CheckboxChangeLayers.js"></script>
+  <script src="./js/CenterViewOnProject.js"></script>
+  <script src="./js/ParsingGnssXML.js"></script> 
+  <script src="./js/ParsingSystemesLocaux.js"></script> 
+  <script src="./js/ParsingCotesXML.js"></script> 
+  <script src="./js/ParsingContraintesXML.js"></script> 
+  <script src="./js/ChangeBackground.js"></script> 
+  <script src="./js/Filters.js"></script>
+  <script src="./js/DetectionBalisesPoints.js"></script>
+  
+  
+  <script> 
+  // ---------------  INITIALISATION DE LA MAP  ---------------
+
+  // Définition de projection MN95 
+  proj4.defs(
+    "EPSG:2056",
+    "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1"
+    + " +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs"
+  );
+  ol.proj.proj4.register(proj4);
+
+  // Fond WMTS CN à échelle dynamique
+  const carteNationale = new ol.layer.Tile({
+    source: new ol.source.TileWMS({
+      url: "https://wms.geo.admin.ch/",
+      params: {
+        layers: "ch.swisstopo.pixelkarte-farbe"
+      },
+      attributions: ["&copy; <a href=\"https://www.geo.admin.ch/fr/home.html\">WMTS CarteNationale / geo.admin.ch</a>"]
+    }),
+    opacity: 0.2
+  });
+
+  // Fond WMTS swissImage à échelle dynamique
+  const swissImage = new ol.layer.Tile({
+    source: new ol.source.TileWMS({
+      url: "https://wms.geo.admin.ch/",
+      params: {
+        layers: "ch.swisstopo.swissimage"
+      },
+      attributions: ["&copy; <a href=\"https://www.geo.admin.ch/fr/home.html\">WMTS SWISSIMAGE / geo.admin.ch</a>"]
+    }),
+    opacity: 0.5
+  });
+
+  // Fond SwissALTI3D relief multidirectionnel à échelle dynamique
+  const SwissSURFACE3D = new ol.layer.Tile({
+    source: new ol.source.TileWMS({
+      url: "https://wms.geo.admin.ch/",
+      params: {
+        layers: "ch.swisstopo.swisssurface3d-reliefschattierung-multidirektional"
+      },
+      attributions: ["&copy; <a href=\"https://www.geo.admin.ch/fr/home.html\">WMTS Relief multidir. issu de SwissSURFACE3D / geo.admin.ch</a>"]
+    }),
+    opacity: 0.5
+  });
+
+  // MO noir et blanc
+  const attributions_geodienste = [
+    "Fond de plan &copy; <a href=\"https://geodienste.ch\">geodienste</a>"
+  ];
+  const MO_nb = new ol.layer.Tile({
+    id: "background-layer",
+    source: new ol.source.TileWMS({
+      url: `https://geodienste.ch/db/av_0/fra?`,
+      params: { 'LAYERS': 'LCSF,LCSFPROJ,Conduites,SOLI,SOSF,SOPT,Adresses_des_batiments,Nomenclature,Biens_fonds,Biens_fonds_projetes,Limites_territoriales', 'TILED': true },
+      attributions: attributions_geodienste,
+    }),
+    zIndex: -99,
+    opacity: 0.4
+  });
+
+  // Projection suisse
+  const projection = new ol.proj.Projection({
+    code: "EPSG:2056",
+    units: "m"
+  });
+
+  // default zoom, center and rotation
+  zoom = 9;
+  center = [2600000, 1200000];
+
+  // Vue de base (centre et zoom), avec projection
+  view = new ol.View({
+    center: center, 
+    projection,
+    zoom: zoom
+  });
+  
+  // Ajout de la Map
+  const map = new ol.Map({
+    target: "map",
+    layers: [
+      MO_nb,
+    ],
+    view,
+    controls: ol.control.defaults({
+      attributionOptions: {
+        collapsible: true, // Copyright affiché 
+        visible: false
+      }
+    })
+  });
+  
+
+
+  </script>
+
+
+  <script> 
+    // ---------------  CENTRAGE AVEC URL  ---------------
+
+    const URLstr = window.location.href
+    centerViewOnURL(URLstr);
+
+  </script>
+
+
+  <script> 
+  // ---------------  SCRIPT PRINCIPAL  ---------------
+
+    // Compte global du nombre d'observations supprimées
+    nbObsSuppr = 0
+
+    echelleEllipses = 100.0 // ECHELLE PAR DEFAUT
+
+    // Ajout d'écouteur d'événement sur le "change" du open-folder
+    document.getElementById('inputfile').addEventListener('change', function() {
+
+      // UN FICHIER -> RESULTATS
+      for (let i = 0; i < document.getElementById('inputfile').files.length; i++){
+
+        // Récupération du nom de fichier PRNx
+        fileName = document.getElementById('inputfile').files[i]
+
+        // Lecture du contenu du fichier PRNx et appel des fonctions de parsing et création d'entités
+        let fr = new FileReader();
+        fr.onload=function() {
+          xmlToParse = fr.result;
+          parser = new DOMParser();
+          xmlDoc = parser.parseFromString(xmlToParse,"text/xml");
+          json = JSON.parse(xml2json(xmlDoc, '  '))
+
+          // Si la première balise est results
+          if (json['results']){ 
+
+            typeFile = 'resultats'
+        
+            // Lancement des traitement pour affichages
+            jsonResults = json['results']
+            typeReseau = json['results']['globalResults']['computationOptions']['networkType']; //LA ou contraint
+            listAllPoints = parsingPointsXML(jsonResults);
+            centerViewOnProject(listAllPoints,URLstr);
+            parsingViseesXML(jsonResults);
+            parsingGNSS(jsonResults);
+            parsingSystemesLocaux(jsonResults);
+            parsingCotesXML(jsonResults);
+            parsingContraintesXML(jsonResults);
+
+            // ajouter les balises ad-hoc aux options de type de filtres possibles
+            addSupplBalisesToSelectFilters();
+            
+
+            
+
+            // étiquette verte IMPORT EFFECTUE
+            document.getElementById("outputTest").textContent = "Import effectué ✓";
+          };
+          // Si la première balise est point
+          if (json['points']){
+            typeFile = 'pointsInput'
+            listAllPoints = parsingPointsXML(json);
+            centerViewOnProject(listAllPoints,URLstr);
+            // étiquette verte IMPORT EFFECTUE
+            document.getElementById("outputTest").textContent = "Import effectué ✓";
+          };
+          // Si la première balise est network et que les pts ont déjà été parsés
+          if (json['network'] && typeFile == 'pointsInput'){
+            typeFile = 'obsInput'
+            parsingViseesXML(json);
+            parsingGNSS(json);
+            parsingSystemesLocaux(json);
+            parsingCotesXML(json);
+            parsingContraintesXML(json);
+
+
+
+
+          };
+          
+        };
+        fr.readAsText(fileName);
+
+
+      };
+      
+    });
+    
+  </script>
+
+  
+  
+
+
+
+  <script>
+  // ---------------  SCRIPT POUR ACCORDEON  ---------------
+    let acc = document.getElementsByClassName("accordion");
+    let i;
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        let panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        } 
+      });
+    }
+
+
+  </script>
+
+
+  <script>
+  // ---------------  SCRIPT POUR SLIDING BAR ECHELLE  ---------------
+
+    let slider = document.getElementById("myRange");
+    let output = document.getElementById("textEchelle");
+    output.innerHTML = slider.value;
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+
+      output.innerHTML = this.value;
+      map.removeLayer(ellipseLayer);
+      map.removeLayer(pointsVariableLayer);
+      map.removeLayer(pointsLayer);
+      map.removeLayer(notCalculatedPointsLayer);
+      map.removeLayer(rectangleLayer);
+      map.removeLayer(vectLayer);
+      map.removeLayer(vectLayerPF);
+      echelleEllipses = parseFloat(this.value);
+      parsingPointsXML(jsonResults);
+      updateFilter(); // ré-appliquer les filtres
+      
+    }
+
+  </script>
+
+
+
+
+
+
+  <script src="./js/PopUpCoords.js"></script>
+
+
+  
+
+
+  
+
+
+
+</body>
+
+
+

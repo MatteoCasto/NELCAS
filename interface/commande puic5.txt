@@ -1,0 +1,1 @@
+pyuic5 -x C:\01_ContraintesMsMo\02_dev\01_code\interface\Maquette.ui -o C:\01_ContraintesMsMo\02_dev\01_code\interface\Maquette.py

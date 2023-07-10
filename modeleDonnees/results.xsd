@@ -1,0 +1,530 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="results">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="globalResults">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="networkName"/>
+              <xs:element type="xs:string" name="date"/>
+              <xs:element type="xs:time" name="heure"/>
+              <xs:element name="computationOptions">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="networkType"/>
+                    <xs:element type="xs:float" name="calculationDimension"/>
+                    <xs:element type="xs:byte" name="maxIterationNbr"/>
+                    <xs:element type="xs:float" name="interruptionCondition"/>
+                    <xs:element type="xs:string" name="robust"/>
+                    <xs:element type="xs:float" name="robustLimit"/>
+                    <xs:element type="xs:float" name="refractionk"/>
+                    <xs:element type="xs:float" name="sigmaRefractionk"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="planimetry">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="CalculationTime"/>
+                    <xs:element type="xs:byte" name="iterationsCount"/>
+                    <xs:element type="xs:string" name="iterationsLog"/>
+                    <xs:element name="stdDevQuotients">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="group" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="groupName"/>
+                                <xs:element type="xs:float" name="quotient"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="distanceGroupsAdditionalUnknowns">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="distanceGroup">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="distanceGroupName"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="counting">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:short" name="unknowns"/>
+                          <xs:element type="xs:short" name="observations"/>
+                          <xs:element type="xs:byte" name="constraints"/>
+                          <xs:element type="xs:short" name="overdetermination"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:byte" name="nbWiSup3.5"/>
+                    <xs:element name="biggestWi">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="wiMax" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="parent"/>
+                                <xs:element type="xs:string" name="pointName"/>
+                                <xs:element name="observation">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:float" name="stdDev"/>
+                                      <xs:element type="xs:float" name="value"/>
+                                      <xs:element type="xs:string" name="discarded"/>
+                                      <xs:element type="xs:short" name="idObsPlani"/>
+                                      <xs:element type="xs:float" name="vi"/>
+                                      <xs:element type="xs:float" name="wi"/>
+                                      <xs:element type="xs:float" name="zi"/>
+                                      <xs:element type="xs:float" name="nablaLi"/>
+                                      <xs:element type="xs:float" name="gi"/>
+                                      <xs:element type="xs:float" name="viLat" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="dist" minOccurs="0"/>
+                                      <xs:element type="xs:string" name="obsType"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="points">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="point" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="pointName"/>
+                    <xs:element type="xs:float" name="E"/>
+                    <xs:element type="xs:float" name="N"/>
+                    <xs:element type="xs:string" name="H"/>
+                    <xs:element type="xs:byte" name="themeMO"/>
+                    <xs:element type="xs:byte" name="natureMO"/>
+                    <xs:element type="xs:byte" name="planimetricElems"/>
+                    <xs:element type="xs:byte" name="altimetricElems"/>
+                    <xs:element type="xs:short" name="idUnkE" minOccurs="0"/>
+                    <xs:element type="xs:short" name="idUnkN" minOccurs="0"/>
+                    <xs:element type="xs:int" name="idUnkH" minOccurs="0"/>
+                    <xs:element name="stdErrEllipse" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:float" name="a"/>
+                          <xs:element type="xs:float" name="b"/>
+                          <xs:element type="xs:float" name="bearA"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="externalReliabilityPlaniVector" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="NA"/>
+                          <xs:element type="xs:string" name="bearNA"/>
+                          <xs:element type="xs:string" name="idObsRespNA"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="deltaPlani" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:float" name="dE"/>
+                          <xs:element type="xs:float" name="dN"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="network">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="polar">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="station" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="stationName"/>
+                          <xs:element name="stationData">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:float" name="I"/>
+                                <xs:element name="stationCentring">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="planiStdDev">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="mm"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="altiStdDev">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="mm"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:string" name="distanceGroup"/>
+                                <xs:element type="xs:string" name="directionGroup"/>
+                                <xs:element type="xs:string" name="centringGroup"/>
+                                <xs:element name="measure" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="pointName"/>
+                                      <xs:element type="xs:byte" name="themeMO" minOccurs="0"/>
+                                      <xs:element type="xs:byte" name="natureMO" minOccurs="0"/>
+                                      <xs:element name="S">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="value"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="dm1">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="value"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="dm2">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="value"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="targetCentring">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="planiStdDev">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element type="xs:string" name="mm"/>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="altiStdDev">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element type="xs:string" name="mm"/>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="RI">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="stdDev"/>
+                                            <xs:element type="xs:string" name="value"/>
+                                            <xs:element type="xs:string" name="discarded"/>
+                                            <xs:element type="xs:short" name="idObsPlani" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="vi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="wi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="zi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="nablaLi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="gi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="viLat" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="dist" minOccurs="0"/>
+                                            <xs:element type="xs:string" name="obsType" minOccurs="0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="DP">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="stdDev"/>
+                                            <xs:element type="xs:float" name="value"/>
+                                            <xs:element type="xs:string" name="discarded"/>
+                                            <xs:element type="xs:short" name="idObsPlani" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="vi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="wi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="zi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="nablaLi" minOccurs="0"/>
+                                            <xs:element type="xs:float" name="gi" minOccurs="0"/>
+                                            <xs:element type="xs:string" name="obsType" minOccurs="0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="DH">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="stdDev"/>
+                                            <xs:element type="xs:string" name="value"/>
+                                            <xs:element type="xs:string" name="discarded"/>
+                                            <xs:element type="xs:int" name="idObsAlti" minOccurs="0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:byte" name="idIncOri"/>
+                                <xs:element type="xs:float" name="valIncOri"/>
+                                <xs:element type="xs:float" name="EMincOri"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="gnss">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="session" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="sessionName"/>
+                          <xs:element type="xs:string" name="gnssGroup"/>
+                          <xs:element name="measure" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pointName"/>
+                                <xs:element name="LY">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="stdDev"/>
+                                      <xs:element type="xs:float" name="value"/>
+                                      <xs:element type="xs:string" name="discarded"/>
+                                      <xs:element type="xs:short" name="idObsPlani" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="vi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="wi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="zi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="nablaLi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="gi" minOccurs="0"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="LX">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="stdDev"/>
+                                      <xs:element type="xs:float" name="value"/>
+                                      <xs:element type="xs:string" name="discarded"/>
+                                      <xs:element type="xs:short" name="idObsPlani" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="vi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="wi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="zi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="nablaLi" minOccurs="0"/>
+                                      <xs:element type="xs:float" name="gi" minOccurs="0"/>
+                                      <xs:element type="xs:string" name="obsType" minOccurs="0"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="unknownParameters">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="idIncTranslationE"/>
+                                <xs:element type="xs:float" name="valIncTranslationE"/>
+                                <xs:element type="xs:byte" name="idIncTranslationN"/>
+                                <xs:element type="xs:float" name="valIncTranslationN"/>
+                                <xs:element type="xs:byte" name="idIncRotationHoriz"/>
+                                <xs:element type="xs:float" name="valIncRotationHoriz"/>
+                                <xs:element type="xs:byte" name="idIncFacteurEchelleHoriz"/>
+                                <xs:element type="xs:float" name="valIncFacteurEchelleHoriz"/>
+                                <xs:element type="xs:float" name="EMtranslationE"/>
+                                <xs:element type="xs:float" name="EMtranslationN"/>
+                                <xs:element type="xs:float" name="EMrotationHoriz"/>
+                                <xs:element type="xs:float" name="EMfacteurEchelleHoriz"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="centroids">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:float" name="meanE"/>
+                                <xs:element type="xs:float" name="meanN"/>
+                                <xs:element type="xs:float" name="meanY"/>
+                                <xs:element type="xs:float" name="meanX"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="localSystems">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="localSystem" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="localSystemName"/>
+                          <xs:element type="xs:string" name="localSystemGroup"/>
+                          <xs:element name="measure" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pointName"/>
+                                <xs:element type="xs:byte" name="themeMO" minOccurs="0"/>
+                                <xs:element type="xs:byte" name="natureMO" minOccurs="0"/>
+                                <xs:element name="LY">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:float" name="stdDev"/>
+                                      <xs:element type="xs:float" name="value"/>
+                                      <xs:element type="xs:string" name="discarded"/>
+                                      <xs:element type="xs:short" name="idObsPlani"/>
+                                      <xs:element type="xs:float" name="vi"/>
+                                      <xs:element type="xs:float" name="wi"/>
+                                      <xs:element type="xs:float" name="zi"/>
+                                      <xs:element type="xs:float" name="nablaLi"/>
+                                      <xs:element type="xs:float" name="gi"/>
+                                      <xs:element type="xs:string" name="obsType" minOccurs="0"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="LX">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:float" name="stdDev"/>
+                                      <xs:element type="xs:float" name="value"/>
+                                      <xs:element type="xs:string" name="discarded"/>
+                                      <xs:element type="xs:short" name="idObsPlani"/>
+                                      <xs:element type="xs:float" name="vi"/>
+                                      <xs:element type="xs:float" name="wi"/>
+                                      <xs:element type="xs:float" name="zi"/>
+                                      <xs:element type="xs:float" name="nablaLi"/>
+                                      <xs:element type="xs:float" name="gi"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="unknownParameters">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="idIncTranslationE"/>
+                                <xs:element type="xs:float" name="valIncTranslationE"/>
+                                <xs:element type="xs:byte" name="idIncTranslationN"/>
+                                <xs:element type="xs:float" name="valIncTranslationN"/>
+                                <xs:element type="xs:byte" name="idIncRotationHoriz"/>
+                                <xs:element type="xs:float" name="valIncRotationHoriz"/>
+                                <xs:element type="xs:float" name="EMtranslationE"/>
+                                <xs:element type="xs:float" name="EMtranslationN"/>
+                                <xs:element type="xs:float" name="EMrotationHoriz"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="centroids">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:float" name="meanE"/>
+                                <xs:element type="xs:float" name="meanN"/>
+                                <xs:element type="xs:float" name="meanY"/>
+                                <xs:element type="xs:float" name="meanX"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="simpleMeasures">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="simpleMeasure" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="simpleMeasureGroup"/>
+                          <xs:element name="measure">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pointName1"/>
+                                <xs:element type="xs:string" name="pointName2"/>
+                                <xs:element name="DP">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:float" name="stdDev"/>
+                                      <xs:element type="xs:float" name="value"/>
+                                      <xs:element type="xs:string" name="discarded"/>
+                                      <xs:element type="xs:short" name="idObsPlani"/>
+                                      <xs:element type="xs:float" name="vi"/>
+                                      <xs:element type="xs:float" name="wi"/>
+                                      <xs:element type="xs:float" name="zi"/>
+                                      <xs:element type="xs:float" name="nablaLi"/>
+                                      <xs:element type="xs:float" name="gi"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="constraints">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="constraint" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="constraintType"/>
+                          <xs:element name="point" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="pointName"/>
+                                <xs:element type="xs:string" name="pointTypeInConstraint"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="discarded"/>
+                          <xs:element name="dm1">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="value"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:byte" name="idConPlani"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

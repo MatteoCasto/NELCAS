@@ -1,0 +1,1130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1434</width>
+    <height>932</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Observations</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>img/Obs.png</normaloff>img/Obs.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">font: 9pt &quot;MS Shell Dlg 2&quot;;</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>30</width>
+    <height>30</height>
+   </size>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#centralWidget {
+    background-color:rgb(255, 255, 255);
+}</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
+    <property name="rightMargin">
+     <number>10</number>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
+    </property>
+    <item row="0" column="0" colspan="2">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#centralWidget{
+   background-color:  rgb(255, 169, 21);
+}</string>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="tabBarAutoHide">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="tab">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="icon">
+        <iconset>
+         <normaloff>img/polar.png</normaloff>img/polar.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string> Polaire</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_13" rowstretch="0,0,0" columnstretch="1,0" rowminimumheight="0,0,520">
+        <item row="1" column="1">
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>131</width>
+            <height>137</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0" rowspan="2">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="title">
+           <string>Stations</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetStations">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom de station</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>I [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ cent. st. plani. [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ cent. st. alti. [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>gr. dist.</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>gr. dir.</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>gr. cent.</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Recherche</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_12">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inputSearchSta"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>nom de station</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="buttonSearchSta">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>nom pt visé dans station</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="buttonSearchPtVis">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="inputSearchPtVis"/>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="suivantStation">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="suivantObsPolaire">
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="title">
+           <string>Visées</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetObsPolaires">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom pt visé</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>RI [g]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ RI [cc]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>RI écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>DS [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ DS [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ DS [ppm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>DS écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ZD [g]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ ZD [cc]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ZD écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>S [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>dm1 [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>dm2 [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ cent. pt vis. plani. [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ cent. pt vis. alti. [mm]</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="icon">
+        <iconset>
+         <normaloff>img/gnss.png</normaloff>img/gnss.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string> GNSS</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_16" rowstretch="0,0,0" columnstretch="1,0,0" rowminimumheight="0,0,520">
+        <item row="0" column="0" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>Sessions</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetSessions">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom de session</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>groupe GNSS</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Recherche</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_14">
+           <item row="0" column="3">
+            <widget class="QPushButton" name="suivantSession">
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="suivantObsGnss">
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="buttonSearchSession">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="buttonSearchPtGnss">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>nom pt dans session</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inputSearchSession"/>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="inputSearchPtGnss"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>nom de session</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>Observations de coordonnées globales</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetObsGnss">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="horizontalHeaderCascadingSectionResizes">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom du point</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LY [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ LY [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LY écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LX [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ LX [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LX écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LH [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ  LH [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LH écarté</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>137</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>190</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>img/sysloc.png</normaloff>img/sysloc.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string> Systèmes locaux</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_18" columnstretch="1,0,0" rowminimumheight="0,350,0,0">
+        <item row="0" column="2" alignment="Qt::AlignRight">
+         <widget class="QGroupBox" name="groupBox_9">
+          <property name="title">
+           <string>Recherche</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_17">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>nom de système</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="buttonSearchSysLoc">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="buttonSearchPtSysLoc">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="inputSearchPtSysLoc"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>nom pt dans système</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inputSearchSysLoc"/>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="suivantSysLoc">
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="suivantPtSysLoc">
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="3">
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
+           <string>Systèmes locaux</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetSystemes">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom de système local</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>groupe système local</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="3">
+         <widget class="QGroupBox" name="groupBox_8">
+          <property name="title">
+           <string>Observations de coordonnées locales</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetObsSysteme">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="horizontalHeaderCascadingSectionResizes">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom du point</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LY [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ LY [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LY écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LX [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ LX [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LX écarté</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LH [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ  LH [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>LH écarté</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>190</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="1" rowspan="2" colspan="2">
+         <widget class="QGroupBox" name="planSysLoc">
+          <property name="styleSheet">
+           <string notr="true">border-color: rgb(98, 140, 255);</string>
+          </property>
+          <property name="title">
+           <string>Plan du système local</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_15">
+           <item row="0" column="0">
+            <widget class="PlotWidget" name="graphWidgetSysLoc" native="true"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>img/simpleMeas.png</normaloff>img/simpleMeas.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string> Mesures simples</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_19" columnstretch="1,0,0" rowminimumheight="0,0,0">
+        <item row="1" column="2">
+         <spacer name="verticalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>342</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>341</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_11">
+          <property name="title">
+           <string>Recherche</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inputSearchPtMes"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>nom de point</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="buttonSearchPtMes">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="suivantCote">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="title">
+           <string>Cotes et dénivelées</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetMesuresSimples">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>nom du point 1</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>nom du point 2</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>groupe de mesure simple</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>DP [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>σ DP [mm]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>DP écarté</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="icon">
+        <iconset>
+         <normaloff>img/constraint.png</normaloff>img/constraint.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string> Contraintes</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_20" columnstretch="1,0,0">
+        <item row="0" column="0" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_12">
+          <property name="title">
+           <string>Contraintes géométriques</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="0" column="0">
+            <widget class="QTableWidget" name="tableWidgetContraintes">
+             <property name="styleSheet">
+              <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;</string>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>type</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>nom point A</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>nom point B</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>nom point C</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>nom point P</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>dm1 [m]</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>écartée</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_13">
+          <property name="title">
+           <string>Recherche</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_10">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inputSearchPtContr"/>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="buttonSearchPtContr">
+             <property name="text">
+              <string>Rechercher</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>nom de point</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="suivantContr">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string>Suivant</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="verticalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>342</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>341</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNouveau"/>
+   <addaction name="actionOuvrir"/>
+   <addaction name="actionEnregistrer"/>
+   <addaction name="actionEnregistrer_sous"/>
+  </widget>
+  <action name="actionNouveau">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>img/newFile.png</normaloff>img/newFile.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOuvrir">
+   <property name="icon">
+    <iconset>
+     <normaloff>img/open2.png</normaloff>img/open2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ouvrir...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>img/save.png</normaloff>img/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer_sous">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>img/saveAs.png</normaloff>img/saveAs.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enregistrer sous...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="ressources.qrc"/>
+  <include location="img/ressources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
