@@ -8,6 +8,7 @@ Created on Wed Sep 28 17:10:42 2022
 import libUtils.rechercheUtils as rechercheUtils
 import libUtils.geometrieUtils as geometrieUtils
 import libUtils.conversionUtils as conversionUtils
+import libUtils.analyseSolvabiliteUtils as analyseSolvabiliteUtils
 from scipy import sparse
 from scipy.sparse import linalg
 from scipy import linalg
@@ -1042,15 +1043,30 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
         b = np.block([[sparseATP.dot(dl)],
                       [t]])
         
-        np.save('A.npy', A)
-        print(str(b))
         
         
-        #### TRAVAIL ICI POUR TEST QUELLES LIGNES POSENT PROBLEMES
-        # ATPA = np.array(A.T@sparseP.A@A, dtype=np.longdouble)
-        # find_problematic_rows(sparseM.A)
+        # np.save('A.npy', A)
         
-        # print('problemIncol :', find_non_invertible_columns(A))
+        #### ANALYSES DE SOLVABILITE
+        P = np.diag(W * 1/((1/sigma0**2)*Kll))
+        ATPA = A.T@P@A 
+        Zcc = np.zeros((nbConPlani,nbConPlani))
+        M = np.block([[A.T@P@A     ,   C.T ],
+                     [C          ,   Zcc ]])
+        b = np.block([[A.T@P@dl],
+                      [t]])
+        
+        
+        #### ANALYSE DE SOLVABILITE
+        
+        listeIdCoord = list(set(listeIdCoord)) # Liste des dx qui concerne que les coordonnées
+        AnalyseSolvabilite = analyseSolvabiliteUtils.SolvabilityAnalysis(M, b, listeIdCoord, critereInterruption,
+                                                                         dictCanevas, dictPoints, dictParametres)
+        AnalyseSolvabilite.runAnalysis()
+        
+        
+        
+        
         
         # Décomposition superLU et solve méthode avec membre de droite
         if iteration > 0: # pour la stabilité de calcul, si une iteration engendre une matrice singulière (dx trop petits pour être stables)
@@ -1078,7 +1094,7 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
         
         
         #### CRITERES INTERRUPTION
-        listeIdCoord = list(set(listeIdCoord))
+        
         dxCoord = []
         for i in listeIdCoord:
             dxCoord.append(dx[i,0])
@@ -1234,8 +1250,7 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     if libreAjuste:
         dictQuotients.update({'controlPointsGroup':{'vk':[], 'pk':[], 'zk':[]}})
     
-    # Noms des groupes distances utilisés (pour inc. suppl. c et m par groupe)
-    listeIncSupplDistances = []
+
     
     #### ^----- LEVES POLAIRES
     if 'polar' in dictCanevas['network'].keys():
@@ -1244,7 +1259,7 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
         listeNomsGroupesDistance = []
         listeNomsGroupesDirection = []
         for groupeDist in dictParametres['parameters']['groups']['distanceGroups']['distanceGroup']:
-            listeNomsGroupesDistance.append(groupeDist['distanceGroupName'])
+            listeNomsGroupesDistance.append(groupeDist['distanceGroupName']) # pour calcul quotients
             
             # Inconnues supplémentaire des groupes de distance
             dictGroupeDist = {'distanceGroupName':groupeDist['distanceGroupName']}
@@ -1252,22 +1267,19 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
                 idIncFacteurEchelle = groupeDist['additionalUnknowns']['idIncFacteurEchelle']
                 valeur = x0[idIncFacteurEchelle,0]
                 ecartType = np.sqrt(Kxx[idIncFacteurEchelle,idIncFacteurEchelle])
-                dictGroupeDist.update({'scaleFactor':{'value':round(1+valeur,7)}})
-                dictGroupeDist['scaleFactor'].update({'stdDev':round(ecartType,8)})
+                groupeDist['additionalUnknowns']['valIncFacteurEchelle'] = round(1+valeur,7)
+                groupeDist['additionalUnknowns'].update({'stdDevScaleFactor':round(ecartType,7)})
                 
             if groupeDist['additionalUnknowns']['additionConstant'] == "true":
                 idIncConstanteAddition = groupeDist['additionalUnknowns']['idIncConstanteAddition']
                 valeur = x0[idIncConstanteAddition,0]
                 ecartType = np.sqrt(Kxx[idIncConstanteAddition,idIncConstanteAddition])
-                dictGroupeDist.update({'additionConstant':{'value':round(valeur,5)}})
-                dictGroupeDist['additionConstant'].update({'stdDev':round(ecartType,6)})
-            
-            # ajout du sous-dict même si vide
-            listeIncSupplDistances.append(dictGroupeDist)
-            
-            
-            
-            
+                groupeDist['additionalUnknowns']['valIncConstanteAddition'] = round(valeur,4)
+                groupeDist['additionalUnknowns'].update({'stdDevAdditionConstant':round(ecartType,4)})
+                
+
+
+         
         for groupeDir in dictParametres['parameters']['groups']['directionGroups']['directionGroup']:
             listeNomsGroupesDirection.append(groupeDir['directionGroupName'])
         
@@ -1808,15 +1820,26 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
             if abs(w[idObs]) > 3.5 :
                 count += 1
             
-    #### RESULTATS GLOBAUX
     
-    # Restructuration du dictionnaire des quotients (en liste sans identifiant dans les balises -> XML correct)
-    listeQuotients = []
-    listeQuotients.append({'groupName':'global', 'quotient':"{:0.2f}".format(quotientGlobal)}) # quotient global
+    
+    # Remettre les quotients dans les groupes des paramètres
     for key,value in dictQuotients.items():
+        #### !!!! MODIFICATION POUR METTRE LES QUOTIENTS DANS LES GROUPES
+        for key1 in dictParametres['parameters']['groups'].keys():
+            for key2 in dictParametres['parameters']['groups'][key1].keys():
+                for groupe in dictParametres['parameters']['groups'][key1][key2]:
+                    for key3 in copy.deepcopy(groupe).keys(): # Balise du nom d'un groupe
+                        if 'Name' in key3 :
+                            if groupe[key3] == key:
+                                groupe.update({'stdDevQuotientFor2D':value['quotient']})
 
-        listeQuotients.append({'groupName':key, 'quotient':value['quotient']})
+                                
+                            
+                                
+                        
+      
     
+    #### RESULTATS GLOBAUX
 
     dictResGlobaux['globalResults'].update({'planimetry':{}})
     dictResGlobaux['globalResults']['planimetry'].update({'CalculationTime':"{:0.1f} s".format(time.time()-timer)})
@@ -1824,11 +1847,8 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     dictResGlobaux['globalResults']['planimetry'].update({'iterationsLog':"\n{:s}".format(logIterations)})
     
     # Quotients d'écart-type d'unité de poids par groupe (et global)
-    dictResGlobaux['globalResults']['planimetry'].update({'stdDevQuotients':{'group':listeQuotients}})
-    
-    # Inconnues supplémentaires pour les groupes distance
-    dictResGlobaux['globalResults']['planimetry'].update({'distanceGroupsAdditionalUnknowns':{'distanceGroup':listeIncSupplDistances}})
-    
+    dictResGlobaux['globalResults']['planimetry'].update({'globalStdDevQuotient':round(quotientGlobal,2)})
+        
     # Dénombrement
     denombrementPlani = {'unknowns':denombrement['nbIncPlani'], 
                          'observations':denombrement['nbObsPlani'],
@@ -1840,10 +1860,10 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     dictResGlobaux['globalResults']['planimetry'].update({'nbWiSup3.5':count})
     dictResGlobaux['globalResults']['planimetry'].update({'biggestWi':{'wiMax':listeWiMaxPlani}})
     
-
-    if libreAjuste:
-        dictResGlobaux['globalResults']['planimetry'].update({'stochasticNetwork':{}})
-        dictResGlobaux['globalResults']['planimetry']['stochasticNetwork'].update({'point':listeLA})
+    # décision de suppression et de tout figurer uniquement dans les paramètres
+    # if libreAjuste:
+    #     dictResGlobaux['globalResults']['planimetry'].update({'stochasticNetwork':{}})
+    #     dictResGlobaux['globalResults']['planimetry']['stochasticNetwork'].update({'point':listeLA})
     
     
     # libérer la mémoire GPU
@@ -2352,11 +2372,12 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
                     if robuste:
                         DH.update({'weightRobustFactor':round(W[idObsDH],2)})
                     
-                    # pour quotients
+                    # pour quotients directions 
                     dictQuotients[stationnement['directionGroup']]['vk'].append(vi)
                     dictQuotients[stationnement['directionGroup']]['pk'].append(1/diagQll[idObsDH])
                     dictQuotients[stationnement['directionGroup']]['zk'].append(zi)
-                
+                    
+
     
     #### ^----- GNSS
     if 'gnss' in dictCanevas['network'].keys():
@@ -2545,21 +2566,28 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
                 
                 
             
-    #### RESULTATS GLOBAUX
+   
     
     # Restructuration du dictionnaire des quotients (en liste sans identifiant dans les balises -> XML correct)
-    listeQuotients = []
-    listeQuotients.append({'groupName':'global', 'quotient':"{:0.2f}".format(quotientGlobal)}) # quotient global
+    # Remettre les quotients dans les groupes des paramètres
     for key,value in dictQuotients.items():
-        listeQuotients.append({'groupName':key, 'quotient':value['quotient']})
-
+        #### !!!! MODIFICATION POUR METTRE LES QUOTIENTS DANS LES GROUPES
+        for key1 in dictParametres['parameters']['groups'].keys():
+            for key2 in dictParametres['parameters']['groups'][key1].keys():
+                for groupe in dictParametres['parameters']['groups'][key1][key2]:
+                    for key3 in copy.deepcopy(groupe).keys(): # Balise du nom d'un groupe
+                        if 'Name' in key3 :
+                            if groupe[key3] == key:
+                                groupe.update({'stdDevQuotientFor1D':value['quotient']})
+    
+    #### RESULTATS GLOBAUX
     dictResGlobaux['globalResults'].update({'altimetry':{}})
     dictResGlobaux['globalResults']['altimetry'].update({'CalculationTime':"{:0.1f} s".format(time.time()-timer)})
     dictResGlobaux['globalResults']['altimetry'].update({'iterationsCount':"{:d}".format(iteration)})
     dictResGlobaux['globalResults']['altimetry'].update({'iterationsLog':"\n{:s}".format(logIterations)})
     
     # Quotients d'écart-type d'unité de poids par groupe (et global)
-    dictResGlobaux['globalResults']['altimetry'].update({'stdDevQuotients':{'group':listeQuotients}})
+    dictResGlobaux['globalResults']['altimetry'].update({'globalStdDevQuotient':round(quotientGlobal,2)})
     
     # Dénombrement
     denombrementAlti = {'unknowns':denombrement['nbIncAlti'], 
@@ -2571,9 +2599,11 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     dictResGlobaux['globalResults']['altimetry'].update({'nbWiSup3.5':count})
     dictResGlobaux['globalResults']['altimetry'].update({'biggestWi':{'wiMax':listeWiMaxAlti}})
 
-    if libreAjuste:
-        dictResGlobaux['globalResults']['altimetry'].update({'stochasticNetwork':{}})
-        dictResGlobaux['globalResults']['altimetry']['stochasticNetwork'].update({'point':listeLA})    
+    
+    # décision de suppression et de tout figurer uniquement dans les paramètres
+    # if libreAjuste:
+    #     dictResGlobaux['globalResults']['altimetry'].update({'stochasticNetwork':{}})
+    #     dictResGlobaux['globalResults']['altimetry']['stochasticNetwork'].update({'point':listeLA})    
  
             
 
@@ -2620,10 +2650,9 @@ class Estimation:
         # En-tête des dictionnaires des résultats globaux
         self.dictResGlobaux = {}
         self.dictResGlobaux = {'globalResults':{}}
-        self.dictResGlobaux['globalResults'].update({'networkName':dictParametres['parameters']['networkName']})
         self.dictResGlobaux['globalResults'].update({'date':datetime.datetime.now().strftime("%d.%m.%y")})
-        self.dictResGlobaux['globalResults'].update({'heure':datetime.datetime.now().strftime("%H:%M:%S")})
-        self.dictResGlobaux['globalResults'].update({'computationOptions':dictParametres['parameters']['computationOptions']})
+        self.dictResGlobaux['globalResults'].update({'time':datetime.datetime.now().strftime("%H:%M:%S")})
+
         
         
         
@@ -2677,7 +2706,7 @@ class Estimation:
         # conversionUtils.dictionnaire2xml(self.dictCanevas, self.dirPathResultats+"\\networkPostAdjustment.xml")
         # conversionUtils.dictionnaire2xml(self.dictResGlobaux, self.dirPathResultats+"\\globalResults.xml" )
         # Fusion des 3
-        conversionUtils.dictionnaire2xml({'results':{**self.dictResGlobaux , **self.dictPoints, **self.dictCanevas}}, self.dirPathResultats+"\\results.xml" )
+        conversionUtils.dictionnaire2xml({'results':{**self.dictParametres, **self.dictResGlobaux , **self.dictPoints, **self.dictCanevas}}, self.dirPathResultats+"\\results.xml" )
 
             
         return None
