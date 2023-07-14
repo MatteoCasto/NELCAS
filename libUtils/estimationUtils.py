@@ -24,6 +24,29 @@ from scipy.linalg.lapack import dtrtri
 
 
 
+
+def updateProgressBar(progressBar, n):
+    """
+    Fonction simple qui incrémente de nla progress bar pour un calcul via la UI.
+
+    Parameters
+    ----------
+    progressBar : objet 
+        instance de l'objet progressBar PyQt5
+    n : int
+        incrément.
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    if progressBar: # Si le programme est appelé en ligne de commande, pas de progressBar
+        progressBar.setValue(progressBar.value() + n)
+
+
+
 def find_problematic_rows(M):
     Q, R = linalg.qr(M)
 
@@ -128,7 +151,7 @@ def derivee_partielle(fonction,variables,x,dx):
             
 
 
-def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResGlobaux):
+def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResGlobaux, progressBar):
     
     """
     Fonction de l'estimation 2D principale.
@@ -228,6 +251,7 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     # -----------------------------------------
     
     
+    updateProgressBar(progressBar, 5)
     
     
     # Boucle de calcul principale 
@@ -1049,9 +1073,8 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
         
         #### ANALYSES DE SOLVABILITE
         P = np.diag(W * 1/((1/sigma0**2)*Kll))
-        ATPA = A.T@P@A 
         Zcc = np.zeros((nbConPlani,nbConPlani))
-        M = np.block([[A.T@P@A     ,   C.T ],
+        M = np.block([[A.T@P@A      ,   C.T ],
                      [C          ,   Zcc ]])
         b = np.block([[A.T@P@dl],
                       [t]])
@@ -1173,7 +1196,9 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
                     # print(W[idObs], idObs, cRobuste) # pour debug
                     
                     
-        
+    
+    updateProgressBar(progressBar, 5)
+    
     # delete A et C pour libérer RAM
     del A
     del C
@@ -1707,6 +1732,8 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     
     del Qvv 
     
+    updateProgressBar(progressBar, 5)
+    
     for key,value in dictQuotients.items():
         # Uniquement si il y a bien des valeurs dans les groupes (utilisés)
         if len(value['vk']) > 0 and len(value['pk']) > 0 and len(value['zk']) > 0:
@@ -1735,6 +1762,7 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     
     del Qxx
     
+    updateProgressBar(progressBar, 5)
     
     for point in dictPoints['points']['point']:
 
@@ -1881,7 +1909,7 @@ def estimation2D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
 
 
 
-def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResGlobaux):
+def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResGlobaux, progressBar):
     
     timer = time.time()
     # libérer la mémoire GPU
@@ -1958,6 +1986,9 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     listePFalti = []
     for point in dictParametres['parameters']['altimetricControlPoints']['point']:
         listePFalti.append(point['pointName'])
+        
+        
+    updateProgressBar(progressBar, 5)
     
     
     # -----------------------------------------
@@ -2262,6 +2293,8 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
         
   
     
+    updateProgressBar(progressBar, 5)
+    
     # Calcul pour L2 uniquement 
     if not robuste:
         
@@ -2317,6 +2350,7 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
     Kxx = s0**2*Qxx
     
     
+    updateProgressBar(progressBar, 5)
 
     #### MAJ OBSERVATIONS ET INDICATEURS (+inc.)
     
@@ -2492,7 +2526,7 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
             value.pop('zk')
             
     
-                            
+    updateProgressBar(progressBar, 5)
     
     #### MAJ POINTS ET INDICATEURS
     
@@ -2536,7 +2570,7 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
             point.update({'deltaAlti':deltaAlti})        
     
         
-    
+    updateProgressBar(progressBar, 5)
     
     #### CLASSEMENT DES WI MAX
     # Récupérer l'obs. des 5 premiers wiMax
@@ -2621,7 +2655,7 @@ def estimation1D(dictCanevas, dictPoints, dictParametres, denombrement, dictResG
 
 class Estimation:
     
-    def __init__(self, dictCanevas, dictPoints, dictParametres, denombrement, dirPathResultats):
+    def __init__(self, dictCanevas, dictPoints, dictParametres, denombrement, dirPathResultats, progressBar):
         """
         Constructeur de la classe "Estimation".
 
@@ -2645,6 +2679,7 @@ class Estimation:
         self.dictParametres = dictParametres
         self.denombrement = denombrement
         self.dirPathResultats = dirPathResultats
+        self.progressBar = progressBar
         
         
         # En-tête des dictionnaires des résultats globaux
@@ -2653,7 +2688,6 @@ class Estimation:
         self.dictResGlobaux['globalResults'].update({'date':datetime.datetime.now().strftime("%d.%m.%y")})
         self.dictResGlobaux['globalResults'].update({'time':datetime.datetime.now().strftime("%H:%M:%S")})
 
-        
         
         
         
@@ -2671,8 +2705,8 @@ class Estimation:
         print("-----------------------------------\n")
         
         
-        
-        return estimation2D(self.dictCanevas, self.dictPoints, self.dictParametres, self.denombrement, self.dictResGlobaux)
+        updateProgressBar(self.progressBar, 5)
+        return estimation2D(self.dictCanevas, self.dictPoints, self.dictParametres, self.denombrement, self.dictResGlobaux, self.progressBar)
     
     
     def compensation1D (self):
@@ -2688,8 +2722,8 @@ class Estimation:
         print("------------------------------------\n")
         
        
-        
-        return  estimation1D(self.dictCanevas, self.dictPoints, self.dictParametres, self.denombrement, self.dictResGlobaux)
+        updateProgressBar(self.progressBar, 5)
+        return  estimation1D(self.dictCanevas, self.dictPoints, self.dictParametres, self.denombrement, self.dictResGlobaux, self.progressBar)
     
     
     
@@ -2707,7 +2741,8 @@ class Estimation:
         # conversionUtils.dictionnaire2xml(self.dictResGlobaux, self.dirPathResultats+"\\globalResults.xml" )
         # Fusion des 3
         conversionUtils.dictionnaire2xml({'results':{**self.dictParametres, **self.dictResGlobaux , **self.dictPoints, **self.dictCanevas}}, self.dirPathResultats+"\\results.xml" )
-
+        
+        updateProgressBar(self.progressBar, 5)
             
         return None
         

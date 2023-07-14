@@ -19,7 +19,7 @@ import libUtils.conversionUtils as conversionUtils
 
 class Process:
     
-    def __init__(self, nomsFichiers, processCtrlCoh):
+    def __init__(self, nomsFichiers, progressBar=False):
         """
         Constructeur de la classe "Process".
 
@@ -35,7 +35,27 @@ class Process:
         """
         
         self.nomsFichiers = nomsFichiers
-        self.processCtrlCoh = processCtrlCoh
+        self.progressBar = progressBar
+    
+    def updateProgressBar(self, n):
+        """
+        Fonction simple qui incrémente de nla progress bar pour un calcul via la UI.
+
+        Parameters
+        ----------
+        n : int
+            incrément.
+
+        Returns
+        -------
+        None.
+
+        """
+        
+        if self.progressBar: # Si le programme est appelé en ligne de commande, pas de progressBar
+            self.progressBar.setValue(self.progressBar.value() + n)
+    
+
         
     
     def run(self):
@@ -48,8 +68,13 @@ class Process:
 
         """
         
-        self.ControlesCoherence = controlesCoherenceUtils.ControlesCoherence(self.nomsFichiers, self.processCtrlCoh)
+        
+        
+        self.ControlesCoherence = controlesCoherenceUtils.ControlesCoherence(self.nomsFichiers)
         self.checkCoherence = self.ControlesCoherence.checkTotal()
+        
+        
+        
         self.ControlesCoherence.exportLog()
         
         debugPlani,debugAlti = None,None
@@ -62,20 +87,27 @@ class Process:
             self.dictPoints = self.ControlesCoherence.getDictPoints()
             self.dictParametres = self.ControlesCoherence.getDictParametres()
             
+            self.updateProgressBar(5)
+            
             # création objet preProcess
             self.PreProcess = preTraitementsUtils.PreProcess(self.dictCanevas, self.dictPoints, self.dictParametres)
+            self.updateProgressBar(5)
             
             # Lancement des pré-traitements
             self.checkPreProcess = self.PreProcess.preTraitements()
+            self.updateProgressBar(5)
             self.checkPreProcessRot = self.PreProcess.rotationsApprochees()
+            self.updateProgressBar(5)
             self.checkPreProcessCentroids = self.PreProcess.centroidesSystemesSessions()
+            self.updateProgressBar(5)
             self.denombrement = self.PreProcess.getDenombrement()
+            self.updateProgressBar(5)
             
             
             if self.checkPreProcess and self.checkPreProcessRot and self.checkPreProcessCentroids : # uniquement si les étapes précédentes validées
                 
                 # ESTIMATION
-                self.Estimation = estimationUtils.Estimation(self.dictCanevas, self.dictPoints, self.dictParametres, self.denombrement, self.nomsFichiers['dossierResultats'])
+                self.Estimation = estimationUtils.Estimation(self.dictCanevas, self.dictPoints, self.dictParametres, self.denombrement, self.nomsFichiers['dossierResultats'], self.progressBar)
                 
                 self.dimensionCalcul = self.dictParametres['parameters']['computationOptions']['calculationDimension']
                 if  self.dimensionCalcul == "2D" or self.dimensionCalcul == "2D+1":

@@ -96,6 +96,7 @@ def structureListeInDict(dictionnaire, typeDict):
         
         for key,value in groupes.items():
             
+            
             for key2, value2 in value.items():
                 if type(value2) == dict:
                     dictionnaire['parameters']['groups'][key][key2] = [value2]
@@ -2022,7 +2023,7 @@ def denombrementElementsPlaniAlti(dictCanevas, dictPoints, dictParametres):
 class ControlesCoherence:
     
     
-    def __init__(self, nomsFichiers, processCtrlCoh):    
+    def __init__(self, nomsFichiers):    
         """
         Constructeur de la classe "controlesCoherence" qui permet de procéder à tous les contrôles de cohérences sur le canevas,
         les points et les paramètres de calcul.
@@ -2046,10 +2047,7 @@ class ControlesCoherence:
         # Initiliastion de la variable pour cette fonction de constructeur
         self.erreurInit = True
         
-        # Choix de l'utilisateur de procéder ou non aux contrôles 
-        self.processCtrlCoh = processCtrlCoh
-        if not self.processCtrlCoh:
-            self.logTotal += '!!!! OPTION NOT SELECTED BY USER !!!!\n\n'
+        
         
         
         # Création des variables (dictionnaires)
@@ -2177,7 +2175,15 @@ class ControlesCoherence:
                     # Les contrôles sémantiques doivent être ok dans tous les cas (coché ou non)
                     if self.checkDoublonsPoints and self.checkerCanevasInPoints and self.checkGroupesCanevasInParam and self.checkDatumInPoints:
                         
-                        # Si cltr coh. oché, on fait les ctrl géométriques
+                        # option des ctrl de cohé. cochée ou non
+                        self.processCtrlCoh = self.dictParametres['parameters']['computationOptions']['geometryPreChecks']
+                        if self.processCtrlCoh == "true":
+                            self.processCtrlCoh = True
+                        else:
+                            self.processCtrlCoh = False
+
+                        
+                        # Si cltr coh. coché, on fait les ctrl géométriques
                         if self.processCtrlCoh:
                         
 
