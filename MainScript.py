@@ -68,19 +68,28 @@ if __name__ == "__main__":
     
     
     
-    processCtrlCoh = True
+
+    nomsFichiersGirard = {'fichierXMLCanevas':dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnees_Girard_avec_problèmes\\Observations.xml', 
+                            'fichierXMLPoints':dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnees_Girard_avec_problèmes\\Points.xml', 
+                            'fichierXMLParametres':dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnees_Girard_avec_problèmes\\Parametres.xml',
+                            'fichierXSDCanevas':dirPath+'\\modeleDonnees\\observationsModel.xsd', 
+                            'fichierXSDPoints':dirPath+'\\modeleDonnees\\pointsModel.xsd', 
+                            'fichierXSDParametres':dirPath+'\\modeleDonnees\\parametersModel.xsd',
+                            'dossierResultats': dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnees_Girard_avec_problèmes\\res\\'}
     
-    nomsFichiers = {'fichierXMLCanevas':dirPath+'\\01_input\\plan17\\Observations.xml', 
-                    'fichierXMLPoints':dirPath+'\\01_input\\plan17\\testCoordApproch\\points_avec_translation_30cm.xml', 
-                    'fichierXMLParametres':dirPath+'\\01_input\\plan17\\Parametres.xml',
-                    'fichierXSDCanevas':dirPath+'\\modeleDonnees\\NEW_observationsModel.xsd', 
-                    'fichierXSDPoints':dirPath+'\\modeleDonnees\\pointsModel.xsd', 
-                    'fichierXSDParametres':dirPath+'\\modeleDonnees\\parametersModel.xsd',
-                    'dossierResultats': dirPath+'\\02_output\\plan17\\testCoordApproch\\'}
     
+    
+    nomsFichiersBelmont = {'fichierXMLCanevas':dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnes_Belmont\\Observations.xml', 
+                            'fichierXMLPoints':dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnes_Belmont\\Points.xml', 
+                            'fichierXMLParametres':dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnes_Belmont\\Parametres.xml',
+                            'fichierXSDCanevas':dirPath+'\\modeleDonnees\\observationsModel.xsd', 
+                            'fichierXSDPoints':dirPath+'\\modeleDonnees\\pointsModel.xsd', 
+                            'fichierXSDParametres':dirPath+'\\modeleDonnees\\parametersModel.xsd',
+                            'dossierResultats': dirPath+'\\analyseSolvabilite\\Generation_donnees_test\\donnes_Belmont\\res\\'}
+            
 
 
-    Process = processUtils.Process(nomsFichiers, processCtrlCoh)
+    Process = processUtils.Process(nomsFichiersBelmont)
     debug = Process.run()
     
     

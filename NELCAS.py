@@ -81,7 +81,7 @@ class UI(QtWidgets.QMainWindow):
         self.windowResGlobaux = windowResGlobaux.UI_ongletResGlobaux()
         self.windowResGlobaux.show()
         
-        try: # Si pas de calcul effectué précédemment
+        try: # Si pas de calcul effectué précédemment (ne pas générer une erreur dans la console)
             self.windowResGlobaux.openFile(self.windowCal.resDirPath.text() + "/results.xml") 
         except:
             pass
