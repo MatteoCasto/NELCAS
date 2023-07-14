@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>246</height>
+    <width>715</width>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,46 @@
     <property name="bottomMargin">
      <number>20</number>
     </property>
-    <item row="2" column="0">
+    <item row="4" column="2">
+     <spacer name="horizontalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="0">
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="1">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="0" colspan="3">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>10</number>
@@ -127,7 +166,7 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_6">
-        <item row="1" column="2" rowspan="2">
+        <item row="0" column="2" rowspan="2">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -140,20 +179,7 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="0" rowspan="2">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>78</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="1">
+        <item row="1" column="1">
          <widget class="QPushButton" name="runCalcul">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -182,25 +208,15 @@ border-color: rgb(0, 0, 0);</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="checkBoxCtrlCoh">
-          <property name="text">
-           <string>Contrôles de cohérence</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <spacer name="verticalSpacer">
+        <item row="0" column="0" rowspan="2">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>20</width>
-            <height>40</height>
+            <width>78</width>
+            <height>20</height>
            </size>
           </property>
          </spacer>
@@ -208,6 +224,25 @@ border-color: rgb(0, 0, 0);</string>
        </layout>
       </item>
      </layout>
+    </item>
+    <item row="4" column="1">
+     <widget class="QProgressBar" name="progressBar">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="textVisible">
+       <bool>true</bool>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

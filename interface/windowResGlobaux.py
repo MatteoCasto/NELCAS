@@ -8,6 +8,13 @@ from PyQt5 import uic
 import libUtils.processUtils as processUtils
 import os
 import time
+import json
+import copy
+
+
+
+
+
 
 
 
@@ -44,6 +51,48 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
         
         # Afficher la fenêtre
         self.show()
+        
+    
+    def parcourir_dictionnaire(self, dictionnaire):
+        """
+        Function qui s'appelle elle-même pour mettre sous forme de liste les éléments demandés
+        dans TOUT le dictionnaire et ses enfants.
+
+        Parameters
+        ----------
+        dictionnaire : dict
+            Dictionnaires et sous-dictionnaires (enfants)
+
+        Returns
+        -------
+        None.
+
+        """
+        
+        for cle, valeur in dictionnaire.items():
+            # Si la clé est dans la possiblité d'être SEULE ou MULTIPLE, la mettre en liste
+            if cle in self.listeItemToPutInList:
+                # mettre en liste le dict
+                if not isinstance(valeur, list):
+                    valeurNew = copy.deepcopy(valeur)
+                    del dictionnaire[cle]
+                    del valeur
+                    dictionnaire.update({cle:[valeurNew]})
+                for sousdict in dictionnaire[cle]:
+                    self.parcourir_dictionnaire(sousdict)
+            else:
+                if isinstance(valeur, dict):
+                    self.parcourir_dictionnaire(valeur)
+                
+    
+    
+        
+        
+        
+        
+        
+        
+        
         
     
     
@@ -83,10 +132,18 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
         
         if filePath: # Si la fenêtre s'ouvre après un calcul
             self.filePathImportResGlobaux = filePath
-            self.importResultatsGlobaux()
+            try:
+                self.importResultatsGlobaux()
+            except:
+                print('--- ERROR IMPORTING',self.filePathImportResGlobaux)
+                return None # Ne rien importer
         else: # Ouvrerture d'un fichier en cliquant sur "ouvrir"
             self.filePathImportResGlobaux = QtWidgets.QFileDialog().getOpenFileName(None,"Open", None, "*.xml")[0]
-            self.importResultatsGlobaux()
+            try:
+                self.importResultatsGlobaux()
+            except:
+                print('--- ERROR IMPORTING',self.filePathImportResGlobaux)
+                return None # Ne rien importer
     
     
     def importResultatsGlobaux(self):
@@ -94,68 +151,81 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
         Fonction d'import des résultats globaux qui s'active au clic du bouton prévu à cet effet.
         """
         
+        # INIT LES ZONES DE TEXTES "GENERAL"
+        self.RES_nomReseau.setText('xxx')
+        self.RES_date.setText('xxx')
+        self.RES_heure.setText('xxx')
+        self.RES_typeReseau.setText('xxx')
+        self.RES_dimension.setText('xxx')
+        self.RES_robuste.setText('xxx')
+        self.RES_limiteRobuste.setText('xxx')
+        self.RES_refractionk.setText('xxx')
+        self.RES_sigmak.setText('xxx')
+        self.RES_ctrl_coh_geom.setText('xxx')
+        
+        # INIT LES ZONES DE TEXTE PLANI ET ALTI
+        self.RES_PLANI_duree.setText('xxx')
+        self.RES_PLANI_nb_iteration.setText('xxx')
+        self.RES_PLANI_inc.setText('xxx')
+        self.RES_PLANI_obs.setText('xxx')
+        self.RES_PLANI_contr.setText('xxx')
+        self.RES_PLANI_surabondance.setText('xxx')
+        self.RES_ALTI_duree.setText('xxx')
+        self.RES_ALTI_nb_iteration.setText('xxx')
+        self.RES_ALTI_inc.setText('xxx')
+        self.RES_ALTI_obs.setText('xxx')
+        self.RES_ALTI_surabondance.setText('xxx')
+        
+        # INIT LES TABLEAUX
+        self.RES_PLANI_treeViewQuotientsPlani.setModel(None)
+        self.tableWidgetWiPlani.setRowCount(0)
+        self.tableWidgetRattachPlani.setRowCount(0)
+        self.RES_ALTI_treeViewQuotients.setModel(None)
+        self.tableWidgetRattachAlti.setRowCount(0)
+        self.tableWidgetWiAlti.setRowCount(0)
+        
+        
         # Initiliser une dict vide (sera ré-attribué)
         self.dictResGlobaux = []
         
         # import du fichier texte XML
+        
+        with open(self.filePathImportResGlobaux) as f:
+            self.dictResGlobaux = xmltodict.parse(f.read())
+        
+            
+        # Structure du dictionnaire (listes pour certains éléments)
+        self.listeItemToPutInList = ['distanceGroup', 'directionGroup', 'centringGroup', 
+                                     'gnssGroup', 'localSystemGroup', 'simpleMeasureGroup']
         try:
-            with open(self.filePathImportResGlobaux) as f:
-                self.dictResGlobaux = xmltodict.parse(f.read())
-            # Set le nom du fichier lu
-            self.setWindowTitle('Résultats  -  {:s}'.format(self.filePathImportResGlobaux))
-            
-            # VIDER LES TABLEAUX
-            self.RES_PLANI_treeViewQuotientsPlani.setModel(None)
-            self.tableWidgetWiPlani.setRowCount(0)
-            self.tableWidgetRattachPlani.setRowCount(0)
-            self.RES_PLANI_treeViewIncSupplDist.setModel(None)
-            self.RES_ALTI_treeViewQuotients.setModel(None)
-            self.tableWidgetRattachAlti.setRowCount(0)
-            self.tableWidgetWiAlti.setRowCount(0)
-            
-            # VIDER LES ZONES DE TEXTES PLANI ET ALTI
-            self.RES_PLANI_duree.setText('xxx')
-            self.RES_PLANI_nb_iteration.setText('xxx')
-            self.RES_PLANI_inc.setText('xxx')
-            self.RES_PLANI_obs.setText('xxx')
-            self.RES_PLANI_contr.setText('xxx')
-            self.RES_PLANI_surabondance.setText('xxx')
-            self.RES_ALTI_duree.setText('xxx')
-            self.RES_ALTI_nb_iteration.setText('xxx')
-            self.RES_ALTI_inc.setText('xxx')
-            self.RES_ALTI_obs.setText('xxx')
-            self.RES_ALTI_surabondance.setText('xxx')
-            
+            self.parcourir_dictionnaire(self.dictResGlobaux)
         except:
-
-            return None
-        
-        self.RES_nomReseau.setText(self.dictResGlobaux['results']['globalResults']['networkName'])
-        
-        # Inconnues supplémentaires pour groupes de dist. en liste (si un seul groupe)
-        try: # si au moins un groupe
-            if type(self.dictResGlobaux['results']['globalResults']['planimetry']['distanceGroupsAdditionalUnknowns']['distanceGroup']) != list:
-                self.listeGroupeDistanceIncSuppl = [self.dictResGlobaux['results']['globalResults']['planimetry']['distanceGroupsAdditionalUnknowns']['distanceGroup']]
-            else: # déjà en liste
-                self.listeGroupeDistanceIncSuppl = self.dictResGlobaux['results']['globalResults']['planimetry']['distanceGroupsAdditionalUnknowns']['distanceGroup']
-        except: # si pas de groupe dist., ne génère pas d'erreur
             pass
         
         
+        # Set le nom du fichier importé dans l'en-tête de la fenêtre
+        self.setWindowTitle('Résultats  -  {:s}'.format(self.filePathImportResGlobaux))
+        
+        
         #### OPTIONS GENERALES
+        self.RES_nomReseau.setText(self.dictResGlobaux['results']['parameters']['networkName'])
         self.RES_date.setText(self.dictResGlobaux['results']['globalResults']['date'])
-        self.RES_heure.setText(self.dictResGlobaux['results']['globalResults']['heure'])
-        self.RES_typeReseau.setText(self.dictResGlobaux['results']['globalResults']['computationOptions']['networkType'])
-        self.RES_dimension.setText(self.dictResGlobaux['results']['globalResults']['computationOptions']['calculationDimension'])
-        self.RES_robuste.setText(self.dictResGlobaux['results']['globalResults']['computationOptions']['robust'])
-        self.RES_limiteRobuste.setText(self.dictResGlobaux['results']['globalResults']['computationOptions']['robustLimit'])
-        self.RES_refractionk.setText(self.dictResGlobaux['results']['globalResults']['computationOptions']['refractionk'])
-        self.RES_sigmak.setText(self.dictResGlobaux['results']['globalResults']['computationOptions']['sigmaRefractionk'])
+        self.RES_heure.setText(self.dictResGlobaux['results']['globalResults']['time'])
+        self.RES_typeReseau.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['networkType'])
+        self.RES_dimension.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['calculationDimension'])
+        self.RES_robuste.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['robust'])
+        self.RES_limiteRobuste.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['robustLimit'])
+        self.RES_refractionk.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['refractionk'])
+        self.RES_sigmak.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['sigmaRefractionk'])
+        self.RES_ctrl_coh_geom.setText(self.dictResGlobaux['results']['parameters']['computationOptions']['geometryPreChecks'])
 
         
-        
+
         #### PLANIMETRIE
-        if self.dictResGlobaux['results']['globalResults']['computationOptions']['calculationDimension'] == "2D+1" or self.dictResGlobaux['results']['globalResults']['computationOptions']['calculationDimension'] == "2D": 
+        if self.dictResGlobaux['results']['parameters']['computationOptions']['calculationDimension'] == "2D+1" or self.dictResGlobaux['results']['parameters']['computationOptions']['calculationDimension'] == "2D": 
+            
+            
+            
             self.RES_PLANI_duree.setText(self.dictResGlobaux['results']['globalResults']['planimetry']['CalculationTime'])
             self.RES_PLANI_nb_iteration.setText(self.dictResGlobaux['results']['globalResults']['planimetry']['iterationsCount'])
             self.RES_PLANI_inc.setText(self.dictResGlobaux['results']['globalResults']['planimetry']['counting']['unknowns'])
@@ -163,59 +233,57 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
             self.RES_PLANI_contr.setText(self.dictResGlobaux['results']['globalResults']['planimetry']['counting']['constraints'])
             self.RES_PLANI_surabondance.setText(self.dictResGlobaux['results']['globalResults']['planimetry']['counting']['overdetermination'])
             
+            
             #### ^---- Quotients treeView
             # Génération du treeView
             self.RES_PLANI_treeViewQuotientsPlani.setHeaderHidden(True)
             self.treeModelQuotientsPlani = QStandardItemModel()
             self.treeModelQuotientsPlani.setColumnCount(2)
             self.rootNodeQuotientsPlani = self.treeModelQuotientsPlani.invisibleRootItem()
+            
+            # Quotient global en premier
+            quotientGlobal = self.dictResGlobaux['results']['globalResults']['planimetry']['globalStdDevQuotient']
+            self.rootNodeQuotientsPlani.appendRow([QStandardItem('GLOBAL'), QStandardItem(quotientGlobal)])
 
-            for groupeStoch in self.dictResGlobaux['results']['globalResults']['planimetry']['stdDevQuotients']['group']:
-                self.rootNodeQuotientsPlani.appendRow([QStandardItem(groupeStoch['groupName']), QStandardItem(groupeStoch['quotient'])])
+            # # get uniquement les noms de groupe et leurs quotient 2D
+            try: 
+                if 'distanceGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['distanceGroups']['distanceGroup']:
+                        self.rootNodeQuotientsPlani.appendRow([QStandardItem(group['distanceGroupName']), QStandardItem(group['stdDevQuotientFor2D'])])
+            except:
+                pass
+            try: 
+                if 'directionGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['directionGroups']['directionGroup']:
+                        self.rootNodeQuotientsPlani.appendRow([QStandardItem(group['directionGroupName']), QStandardItem(group['stdDevQuotientFor2D'])])  
+            except:
+                pass
+            try:   
+                if 'gnssGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['gnssGroups']['gnssGroup']:
+                        self.rootNodeQuotientsPlani.appendRow([QStandardItem(group['gnssGroupName']), QStandardItem(group['stdDevQuotientFor2D'])])  
+            except:
+                pass
+            try: 
+                if 'localSystemGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['localSystemGroups']['localSystemGroup']:
+                        self.rootNodeQuotientsPlani.appendRow([QStandardItem(group['localSystemGroupName']), QStandardItem(group['stdDevQuotientFor2D'])])  
+            except:
+                pass
+            try: 
+                if 'simpleMeasureGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['simpleMeasureGroups']['simpleMeasureGroup']:
+                        self.rootNodeQuotientsPlani.appendRow([QStandardItem(group['simpleMeasureGroupName']), QStandardItem(group['stdDevQuotientFor2D'])])  
+            except:
+                pass
 
             self.RES_PLANI_treeViewQuotientsPlani.setModel(self.treeModelQuotientsPlani)
             self.RES_PLANI_treeViewQuotientsPlani.expandAll()
-            self.RES_PLANI_treeViewQuotientsPlani.setColumnWidth(0,200)
+            self.RES_PLANI_treeViewQuotientsPlani.resizeColumnToContents(0)
+            self.RES_PLANI_treeViewQuotientsPlani.resizeColumnToContents(1)
             
             
             
-            #### ^---- Inc. supplémentaires distances treeView
-            # Génération du treeView si au moins un groupe de dist. est concerné
-            if self.dictResGlobaux['results']['globalResults']['planimetry']['distanceGroupsAdditionalUnknowns'] != None: 
-                
-                if len(self.listeGroupeDistanceIncSuppl) > 0: # si il y'a bien un groupe concerné (en liste)
-                
-                    self.RES_PLANI_treeViewIncSupplDist.setHeaderHidden(True)
-                    self.treeModelIncSupplDist = QStandardItemModel()
-                    self.treeModelIncSupplDist.setColumnCount(2)
-                    self.rootNodeIncSupplDist = self.treeModelIncSupplDist.invisibleRootItem()
-                    
-                    for groupeDist in self.listeGroupeDistanceIncSuppl:
-    
-                        groupe = QStandardItem(groupeDist['distanceGroupName'])
-
-                        if 'scaleFactor' in groupeDist.keys():
-                            facteurEchelle = QStandardItem("Facteur d'échelle")
-                            valeur = (float(groupeDist['scaleFactor']['value'])-1)*1e6 # en ppm
-                            ecType = float(groupeDist['scaleFactor']['stdDev'])*1e6 # en ppm
-                            facteurEchelle.appendRow([QStandardItem('valeur [ppm]'), QStandardItem("{:0.1f}".format(valeur))])
-                            facteurEchelle.appendRow([QStandardItem('σ [ppm]'), QStandardItem("{:0.1f}".format(ecType))])
-                            groupe.appendRow(facteurEchelle)
-    
-                        if 'additionConstant' in groupeDist.keys():
-                            constanteAddition = QStandardItem("Constante d'addition")
-                            valeur = float(groupeDist['additionConstant']['value'])*1000 # en mm
-                            ecType = float(groupeDist['additionConstant']['stdDev'])*1000 # en mm
-                            constanteAddition.appendRow([QStandardItem('valeur [mm]'), QStandardItem("{:0.1f}".format(valeur))])
-                            constanteAddition.appendRow([QStandardItem('σ [mm]'), QStandardItem("{:0.1f}".format(ecType))])
-                            groupe.appendRow(constanteAddition)
-                        
-                        self.rootNodeIncSupplDist.appendRow(groupe)
-                        
-                    self.RES_PLANI_treeViewIncSupplDist.setModel(self.treeModelIncSupplDist)
-                    self.RES_PLANI_treeViewIncSupplDist.expandAll()
-                    self.RES_PLANI_treeViewIncSupplDist.setColumnWidth(0,200)
-                
                 
             #### ^---- Wi QTableWidget PLANI
             
@@ -267,10 +335,10 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
             
             #### ^---- LIBRE AJUSTE RATTACHEMENT
             
-            if self.dictResGlobaux['results']['globalResults']['computationOptions']['networkType'] == 'stochastic':
+            if self.dictResGlobaux['results']['parameters']['computationOptions']['networkType'] == 'stochastic':
                 
                 # liste des balises <points> des pts de rattachement
-                self.listeRattachPlani = self.dictResGlobaux['results']['globalResults']['planimetry']['stochasticNetwork']['point']
+                self.listeRattachPlani = self.dictResGlobaux['results']['parameters']['planimetricControlPoints']['point']
                 self.tableWidgetRattachPlani.setRowCount(len(self.listeRattachPlani))
                 for row, point in enumerate(self.listeRattachPlani): 
                     # On set les item dans la Table
@@ -319,7 +387,7 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
         
 
         
-        if self.dictResGlobaux['results']['globalResults']['computationOptions']['calculationDimension'] == "2D+1" or self.dictResGlobaux['results']['globalResults']['computationOptions']['calculationDimension'] == "1D": 
+        if self.dictResGlobaux['results']['parameters']['computationOptions']['calculationDimension'] == "2D+1" or self.dictResGlobaux['results']['parameters']['computationOptions']['calculationDimension'] == "1D": 
             self.RES_ALTI_duree.setText(self.dictResGlobaux['results']['globalResults']['altimetry']['CalculationTime'])
             self.RES_ALTI_nb_iteration.setText(self.dictResGlobaux['results']['globalResults']['altimetry']['iterationsCount'])
             self.RES_ALTI_inc.setText(self.dictResGlobaux['results']['globalResults']['altimetry']['counting']['unknowns'])
@@ -329,16 +397,46 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
             #### ^---- Quotients treeView
             # Génération du treeView
             self.RES_ALTI_treeViewQuotients.setHeaderHidden(True)
-            self.treeModelQuotientsAlti = QStandardItemModel()
-            self.treeModelQuotientsAlti.setColumnCount(2)
-            self.rootNodeQuotientsAlti = self.treeModelQuotientsAlti.invisibleRootItem()
+            self.treeModelQuotients = QStandardItemModel()
+            self.treeModelQuotients.setColumnCount(2)
+            self.rootNodeQuotients = self.treeModelQuotients.invisibleRootItem()
+            
+            
+            ##### CORRIGER ICI
+            # Quotient global en premier
+            quotientGlobal = self.dictResGlobaux['results']['globalResults']['altimetry']['globalStdDevQuotient']
+            self.rootNodeQuotients.appendRow([QStandardItem('GLOBAL'), QStandardItem(quotientGlobal)])
 
-            for groupeStoch in self.dictResGlobaux['results']['globalResults']['altimetry']['stdDevQuotients']['group']:
-                self.rootNodeQuotientsAlti.appendRow([QStandardItem(groupeStoch['groupName']), QStandardItem(groupeStoch['quotient'])])
+            # # get uniquement les noms de groupe et leurs quotient 2D
+            try: 
+                if 'directionGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['directionGroups']['directionGroup']:
+                        self.rootNodeQuotients.appendRow([QStandardItem(group['directionGroupName']), QStandardItem(group['stdDevQuotientFor1D'])])  
+            except:
+                pass
+            try: 
+                if 'gnssGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['gnssGroups']['gnssGroup']:
+                        self.rootNodeQuotients.appendRow([QStandardItem(group['gnssGroupName']), QStandardItem(group['stdDevQuotientFor1D'])])  
+            except:
+                pass
+            try: 
+                if 'localSystemGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['localSystemGroups']['localSystemGroup']:
+                        self.rootNodeQuotients.appendRow([QStandardItem(group['localSystemGroupName']), QStandardItem(group['stdDevQuotientFor1D'])])  
+            except:
+                pass
+            try: 
+                if 'simpleMeasureGroups' in self.dictResGlobaux['results']['parameters']['groups'].keys():
+                    for group in self.dictResGlobaux['results']['parameters']['groups']['simpleMeasureGroups']['simpleMeasureGroup']:
+                        self.rootNodeQuotients.appendRow([QStandardItem(group['simpleMeasureGroupName']), QStandardItem(group['stdDevQuotientFor1D'])])  
+            except:
+                pass   
 
-            self.RES_ALTI_treeViewQuotients.setModel(self.treeModelQuotientsAlti)
+            self.RES_ALTI_treeViewQuotients.setModel(self.treeModelQuotients)
             self.RES_ALTI_treeViewQuotients.expandAll()
-            self.RES_ALTI_treeViewQuotients.setColumnWidth(0,200)
+            self.RES_ALTI_treeViewQuotients.resizeColumnToContents(0)
+            self.RES_ALTI_treeViewQuotients.resizeColumnToContents(1)
             
             
             
@@ -374,10 +472,10 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
             
             #### ^---- LIBRE AJUSTE RATTACHEMENT
             
-            if self.dictResGlobaux['results']['globalResults']['computationOptions']['networkType'] == 'stochastic':
+            if self.dictResGlobaux['results']['parameters']['computationOptions']['networkType'] == 'stochastic':
                 
                 # liste des balises <points> des pts de rattachement
-                self.listeRattachAlti = self.dictResGlobaux['results']['globalResults']['altimetry']['stochasticNetwork']['point']
+                self.listeRattachAlti = self.dictResGlobaux['results']['parameters']['altimetricControlPoints']['point']
                 self.tableWidgetRattachAlti.setRowCount(len(self.listeRattachAlti))
                 for row, point in enumerate(self.listeRattachAlti): 
                     # On set les item dans la Table
@@ -397,7 +495,10 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
                     self.setFloatInQTableWidget(self.tableWidgetRattachAlti, row, 6, round(float(point['indicateursHH']['nablaLi'])*1000,1))
                     self.setFloatInQTableWidget(self.tableWidgetRattachAlti, row, 7, round(float(point['indicateursHH']['gi'])*1000,1))
                     
-                    
+        
+                
+        # MESSAGE QUE LE FICHIER RES A ETE IMPORTE
+        print('--- RESULTS FILE IMPORTED')
             
             
             
@@ -410,7 +511,7 @@ class UI_ongletResGlobaux(QtWidgets.QMainWindow):
             
             
             
-            # if self.dictResGlobaux['results']['globalResults']['computationOptions']['networkType'] == 'stochastic':
+            # if self.dictResGlobaux['results']['parameters']['computationOptions']['networkType'] == 'stochastic':
                 
             #     # liste des balises <points> des pts de rattachement
             #     self.listeRattachAlti = self.dictResGlobaux['results']['globalResults']['altimetry']['stochasticNetwork']['point']

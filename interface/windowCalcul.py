@@ -39,10 +39,10 @@ class UI_ongletCalcul(QtWidgets.QMainWindow):
         self.windowResGlobaux = windowResGlobaux.UI_ongletResGlobaux()
         self.windowResGlobaux.show()
         
-        try: # Si pas de calcul effectué précédemment
-            self.windowResGlobaux.openFile(self.resDirPath.text() + "/results.xml") 
-        except:
-            pass
+        # try: # Si pas de calcul effectué précédemment
+        self.windowResGlobaux.openFile(self.resDirPath.text() + "/results.xml") 
+        # except:
+            # pass
         
     
     """
@@ -80,8 +80,10 @@ class UI_ongletCalcul(QtWidgets.QMainWindow):
         FONCTION QUI LANCE L'AJUSTEMENT.
         """
         
-        processCtrlCoh = self.checkBoxCtrlCoh.isChecked()
-        nomsFichiers = {'fichierXMLCanevas':self.pathObs.text(), 
+        # Remettre la progress bar à 0
+        self.progressBar.setValue(0)
+        
+        nomsFichiers = {'fichierXMLCanevas':self.pathObs.text(),
                         'fichierXMLPoints':self.pathPoints.text(), 
                         'fichierXMLParametres':self.pathParam.text(),
                         'fichierXSDCanevas':os.getcwd()+"\\modeleDonnees\\observationsModel.xsd", 
@@ -90,11 +92,12 @@ class UI_ongletCalcul(QtWidgets.QMainWindow):
                         'dossierResultats': self.resDirPath.text()}
         
         # try: # éviter que le programme s'arrête si il y'a une erreur inexpliquée
-        Process = processUtils.Process(nomsFichiers, processCtrlCoh)
+        Process = processUtils.Process(nomsFichiers, self.progressBar)
         calculDone = Process.run()
-        # Dès calcul terminé, ouvrir les résultats au filePath saisi lors du calcul
         if calculDone:
             self.openWindowResGlobaux()
+            # Remettre la progress bar à 0
+            self.progressBar.setValue(100)
             
             
         # except:
