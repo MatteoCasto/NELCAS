@@ -131,7 +131,7 @@ class UI_ongletConversions(QtWidgets.QMainWindow):
         """
         Fonction qui lance la conversion des mesures LTOP vers XML.
         """
-        conversionUtils.LTOPMES2xml(self.inputMesLTOP.text(), self.outputObsXml.text())
+        conversionUtils.LTOPMES2xml(self.inputMesLTOP.text(), self.outputObsXml.text(), self.checkBoxLigneST.isChecked())
         
     def runConversionsKoo2XmlClicked(self):
         """
