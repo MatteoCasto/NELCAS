@@ -1249,20 +1249,21 @@ def LTOPKOO2xml(filePathKOO, filePathOutput):
     
     print('\nLTOP KOO conversion to points XML successfully executed\n')
             
+    
+    
+    
+    
+    
 
 
-def LTOPMES2xml(filePathMES, filePathOutput):
+def LTOPMES2xml(filePathMES, filePathOutput, makeEachOriSta):
     
     """
-    
-    
-    !!! FONCTION A REFAIRE OU MODIFIER
-    
     
     Transformation du fichier de mesure .MES de LTOP à XML.
     Parse d'abord le fichier LTOP pour trouver les points visés par sessions ou stations. 
     -> Ne prend pas en compte l'ordre des lignes, l'importance est le numéro du point.
-    Si il manque un type de mesure, n'ajoute pas la visée (ex. si il manque LX et qu'il y a que LY et LH, n'ajoute aucune <measure>).
+    Si il manque un type de mesure, s'arrange pour ajouter le maximum et écarter les types de mesures non-présents.
 
     Parameters
     ----------
@@ -1270,6 +1271,9 @@ def LTOPMES2xml(filePathMES, filePathOutput):
         Lien vers le fichier .ll1 
     filePathOutput : string (ne pas oublier les doubles backslash)
         Lien vers le fichier d'export XML
+    makeEachOriSta : bool
+        Option True/False pour créer ou non une nouvelle inconnue d'orientation à chaque ST
+        selon la structure LTOP (création d'une balise <station>)
         
     Returns
     -------
@@ -1281,7 +1285,7 @@ def LTOPMES2xml(filePathMES, filePathOutput):
     
     # Initialisation
     listeLTOPsessions, listeLTOPstations = [], []
-    
+
     # Lecture du fichier MES et pré-stockage des éléments de chaque station/session (avant la conversion XML, car LY/LX/LH peuvent être séparés)
     with open(filePathMES, 'r') as f:
         
@@ -1301,16 +1305,25 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                     nomStation = line[2:14].strip()
                     I = line[46:53].strip()
                     
-                    # Si la dernière station a le même nom, alors fusionne
-                    if len(listeLTOPstations) > 0 and listeLTOPstations[-1]['stationName'] != nomStation:
+                    # Si l'option est cochée, crée
+                    if not makeEachOriSta:
+                        # Si la dernière station a le même nom, alors fusionne
+                        if len(listeLTOPstations) > 0 and listeLTOPstations[-1]['stationName'] != nomStation:
+                            listeLTOPstations.append({'stationName':nomStation,
+                                                      'I': I,
+                                                      'pointsVises':{}})
+                        # Ecrire la première station
+                        elif len(listeLTOPstations) == 0:
+                            listeLTOPstations.append({'stationName':nomStation,
+                                                      'I': I,
+                                                      'pointsVises':{}})
+                    else: 
+                        # Création basique d'une station à chaque "ST"
                         listeLTOPstations.append({'stationName':nomStation,
                                                   'I': I,
                                                   'pointsVises':{}})
-                    # Ecrire la première station
-                    elif len(listeLTOPstations) == 0:
-                        listeLTOPstations.append({'stationName':nomStation,
-                                                  'I': I,
-                                                  'pointsVises':{}})
+                        
+                    
                 
                 elif indice == 'RI' or indice == 'DS' or indice == 'HW' or indice =='ZD' or indice =='DP':
                     
@@ -1326,7 +1339,6 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                         value = "{:0.4f}".format(100.0-float(value.replace(' ','')))
                     # Si le no de point n'est pas dans la liste LTOP, crée une occurence
                     if pointName not in listeLTOPstations[-1]['pointsVises'].keys():
-                        S = line[51:58].strip() 
                         listeLTOPstations[-1]['pointsVises'].update({pointName:{indice:[stdDev, value, S]}})
                     else:
                         listeLTOPstations[-1]['pointsVises'][pointName].update({indice:[stdDev, value, S]})
@@ -1353,11 +1365,9 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                     else:
                         listeLTOPsessions[-1]['pointsVises'][pointName].update({indice:[stdDev, value]})
                         
-                
-    print(listeLTOPstations)
+            
 
         
-                        
     #### DONNES CONFORMES AU MODELE XSD          
         
     
@@ -1371,9 +1381,9 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                        'stationData':{'I':station['I'],
                                       'stationCentring':{'planiStdDev':{'mm':''},
                                                          'altiStdDev':{'mm':''}},
-                                      'distanceGroup':'groupeDistanceParDefaut',
-                                      'directionGroup':'groupeDirectionParDefaut',
-                                      'centringGroup':'groupeCentrageParDefaut',
+                                      'distanceGroup':'groupeDistances',
+                                      'directionGroup':'groupeDirections',
+                                      'centringGroup':'groupeCentrage',
                                       'measure':[]
                                       }
                        }
@@ -1397,6 +1407,7 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                 ZD = {'stdDev':{'cc':data['ZD'][0]},
                       'value':data['ZD'][1],
                       'discarded':''}
+                S = data['ZD'][2] # Le S du DS définit le S de la mesure (fusion du fichier LTOP, peut être vide '')
             if 'DP' in data.keys():
                 DP = {'stdDev':{'mm':data['DP'][0],
                                 'ppm':''},
@@ -1407,7 +1418,7 @@ def LTOPMES2xml(filePathMES, filePathOutput):
             
             # Aucune info de distance
             if not DP and not DS:
-                DS = {'stdDev':{'mm':'9999',
+                DS = {'stdDev':{'mm':'',
                                 'ppm':''},
                                 'value':'9999',
                                 'discarded':'true'}
@@ -1417,28 +1428,26 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                 DS = DP
                 ZD = {'stdDev':{'cc':''},
                       'value':'100.0000',
-                      'discarded':''}
+                      'discarded':'true'}
                 
             # Si pas de direction RI
             if not RI:
-                RI = {'stdDev':{'cc':'9999'},
+                RI = {'stdDev':{'cc':''},
                       'value':'9999',
                       'discarded':'true'}
-            
             
             # Si pas de ZD
             if not ZD:
-                ZD = {'stdDev':{'cc':'9999'},
+                ZD = {'stdDev':{'cc':''},
                       'value':'9999',
                       'discarded':'true'}
+                S = ''
                 
-            
-            print('\n\ndebug2')
-            print(DP, DS, RI, ZD)
+        
             # Ajouter la balise <measure>
             if DS and ZD and RI:
-                
-                    S = data['ZD'][2] # Le S du DS définit le S de la mesure (fusion du fichier LTOP, peut être vide '')
+                    
+
                     dictStation['stationData']['measure'].append({'pointName':key,
                                                     'RI':RI,
                                                     'DS':DS,
@@ -1451,13 +1460,6 @@ def LTOPMES2xml(filePathMES, filePathOutput):
                                                     })
                     
 
-                
-                
-                
-                
-                
-                
-                
                 
                 
                 
@@ -1518,7 +1520,7 @@ def LTOPMES2xml(filePathMES, filePathOutput):
         
         # En tête de session
         dictSession = {'sessionName':session['sessionName'],
-                       'gnssGroup':'groupeGNSSParDefaut',
+                       'gnssGroup':'groupeGNSS',
                        'measure':[]}
         
         # points visés par session selon lecture du fichier LTOP
@@ -1526,27 +1528,45 @@ def LTOPMES2xml(filePathMES, filePathOutput):
             
             # Initialiser à False, va se transformer en sous-dict de l'obs. si elle existe
             LY, LX, LH = False, False, False
+            
+            # mini dict si pas d'obs pour un type
+            sousDictVide = {'stdDev':{'mm':''},
+                            'value':'9999',
+                            'discarded':'true'}
             # Parcourir les types d'obs. lues dans le fichier LTOP
             if 'LY' in data.keys():
                 LY = {'stdDev':{'mm':data['LY'][0]},
                       'value':data['LY'][1],
                       'discarded':''}
+            else: # si pas de LY
+                LY = sousDictVide
+                
             if 'LX' in data.keys():
                 LX = {'stdDev':{'mm':data['LX'][0]},
                       'value':data['LX'][1],
                       'discarded':''}
+            else: # si pas de LX
+                LX = sousDictVide
+                
             if 'LH' in data.keys():
                 LH = {'stdDev':{'mm':data['LH'][0]},
                       'value':data['LH'][1],
                       'discarded':''}
+            else: # si pas de LX
+                LX = sousDictVide
             
-            # Ajoute la <measure> uniquement si il y'a les trois type d'obs.
+            
+            
+            # Ajoute la <measure> uniquement si il y'a les trois type d'obs. (tous cas réglés plus hauts)
             if LY and LX and LH:
                 dictSession['measure'].append({'pointName':key,
                                                 'LY':LY,
                                                 'LX':LX,
                                                 'LH':LH,
                                                 })
+                
+            
+                
             
         # Ajout au dictionnaire total des sessions
         allSessions['gnss']['session'].append(dictSession)
